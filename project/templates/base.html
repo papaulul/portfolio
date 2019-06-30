@@ -8,7 +8,6 @@
     <!-- Bootstrap -->
     <link href="{{bootstrap_find_resource('css/bootstrap.css', cdn='bootstrap')}}" rel="stylesheet">
     <link href="{{ url_for('static', filename='styles1.css') }}" rel="stylesheet">
-
   </head>
   <body{% block body_attribs %}{% endblock body_attribs %}>
     <!--Navbar-->  
@@ -29,7 +28,6 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-              <li ><a href="/">Home <span class="sr-only">(current)</span></a></li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Airbnb <span class="caret"></span></a>
                 <ul class="dropdown-menu">
@@ -45,9 +43,9 @@
                   <ul class="dropdown-menu">
                       <li><a href="/tripadvisor">About</a></li>
                       <li role="separator" class="divider"></li>
-                      <li><a href="#">Analysis</a></li>
+                      <li><a href="/tripadvisor/analysis">Analysis</a></li>
                       <li role="separator" class="divider"></li>
-                      <li><a href="#">Demo</a></li>
+                      <li><a href="/tripadvisor/demo">Demo</a></li>
                   </ul>
                 </li>
               <li class="dropdown">
@@ -63,14 +61,14 @@
     
 
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-              <a role = "button" href = "#" class="btn btn-danger navbar-btn">About Me</a>
+            <ul class="nav navbar-nav navbar-right" style="margin-right:1%;">
+              <a role = "button" href = "/aboutme" class="btn btn-danger navbar-btn">About Me</a>
             </ul>
           </div><!-- /.navbar-collapse -->
         </div>
         </div><!-- /.container-fluid -->
       </nav>
-    <div>
+    <div style="background-color: whitesmoke">
       {% block page_content %}{% endblock %}
     </div>
 
