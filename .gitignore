@@ -1,6 +1,6 @@
 __pycache__/*
 .vscode/*
-project/__pycache__/*
 venv/*
 .DS_Store
-project/static/*
+static/*
+sqlite/*
