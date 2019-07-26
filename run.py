@@ -1,11 +1,13 @@
 import os 
-from flask import Flask, render_template
+from flask import Flask, render_template, session, redirect, url_for, request
 from flask_bootstrap import Bootstrap 
 from config import config 
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
-from flask import render_template, session, redirect, url_for
 from datetime import datetime 
+import pandas as pd 
+import pickle
+
 
 app = Flask(__name__)
 
@@ -13,9 +15,9 @@ bootstrap = Bootstrap(app)
 moment= Moment()
 db = SQLAlchemy()
 
-@app.route('/', methods=['GET','POST'])
+@app.route('/')
 def index():
-    return render_template('index.html' ,current_time=datetime.utcnow())
+    return render_template('index.html')
 
 @app.route('/airbnb')
 def airbnb():
@@ -43,7 +45,6 @@ def glassdoor_about():
 @app.route('/glassdoor/analysis')
 def glassdoor_analysis():
     return render_template('glassdoor_about.html')
-
 @app.route('/glassdoor/demo')
 def glassdoor_demo():
     return render_template('glassdoor_about.html')
@@ -60,9 +61,81 @@ def tripadvisor_about():
 def tripadvisor_analysis():
     return render_template('tripadvisor_analysis.html')
 
-@app.route('/tripadvisor/demo', methods=['GET','POST'])
+@app.route('/tripadvisor/demo')
 def tripadvisor_demo():
-    return render_template('tripadvisor_demo.html')
+    amenities =  ['Banquet Room', 'Bar/Lounge', 'Breakfast Available','Breakfast included','Conference Facilities', 'Family Rooms', 'Free parking', 'Microwave', 'Outdoor pool', 'Pets Allowed ( Dog / Pet Friendly )', 'Pool', 'Public Wifi','Refrigerator in room', 'Restaurant', 'Room service', 'Self-Serve Laundry']
+    return render_template('tripadvisor_demo.html', amenities = amenities, results={})
+
+@app.route('/tripadvisor/demo1', methods=["POST"])
+def tripadvisor_process():
+    if request.method == 'POST':
+        #Read in files
+        review = pickle.load(open('static/files/review.sav','rb'))
+        vectorizer = pickle.load(open('static/files/vectorizer.pkl','rb'))
+        df = pd.read_pickle('static/files/review_final.pkl')
+        hotel_info = pd.read_pickle('static/files/hotel_info.pkl')
+        hotel = pickle.load(open('static/files/hotel.sav','rb'))
+        ss = pickle.load(open('static/files/quant_scaled.sav','rb'))
+        amenities =  ['Banquet Room', 'Bar/Lounge', 'Breakfast Available','Breakfast included','Conference Facilities', 'Family Rooms', 'Free parking', 'Microwave', 'Outdoor pool', 'Pets Allowed ( Dog / Pet Friendly )', 'Pool', 'Public Wifi','Refrigerator in room', 'Restaurant', 'Room service', 'Self-Serve Laundry']
+
+        amenities_all =  ['Accessible rooms','Air conditioning', 'Airport transportation', 'Babysitting','Banquet Room', 'Bar/Lounge', 'Breakfast Available','Breakfast included', 'Business Center with Internet Access','Children Activities (Kid / Family Friendly)', 'Concierge','Conference Facilities', 'Dry Cleaning','Electric vehicle charging station', 'Family Rooms','Fitness Center with Gym / Workout Room','Free High Speed Internet (WiFi)', 'Free Internet', 'Free parking','Golf course', 'Heated pool', 'Hot Tub', 'Indoor pool', 'Kitchenette','Laundry Service', 'Meeting rooms', 'Microwave', 'Minibar','Multilingual Staff', 'Non-smoking hotel', 'Non-smoking rooms','Outdoor pool', 'Paid Internet', 'Paid Wifi','Pets Allowed ( Dog / Pet Friendly )', 'Pool', 'Public Wifi','Refrigerator in room', 'Restaurant', 'Room service', 'Sauna','Self-Serve Laundry', 'Shuttle Bus Service', 'Smoking rooms available','Spa', 'Suites', 'Tennis Court', 'Wheelchair access']
+        # Read inputs
+        demo = {}
+        for amen in amenities_all:
+            x = request.form.get(amen)
+            if x != None:
+                demo[amen] = True
+            else:
+                if int(sum(hotel_info[amen])/len(hotel_info)*100) >= 70:
+                    demo[amen] = True
+                elif int(sum(hotel_info[amen])/len(hotel_info)*100) <= 30:
+                    demo[amen] = False
+                else:
+                    demo[amen] = False
+        demo['num_amenities'] = sum(demo.values())
+        review_input = request.form['rawtext']
+        size_choice = request.form['Size']
+        if size_choice.lower() == 'large':
+            size_choice = 243.50
+        elif size_choice.lower() == 'medium':
+            size_choice = 147.70
+        elif size_choice.lower() == 'small':
+            size_choice = 100.00
+        else: 
+            size_choice = -1
+        demo['num_rooms']  = size_choice        
+        quality_choice = request.form['Quality']
+        if quality_choice.lower() == 'great':
+            quality_choice = 5
+        elif quality_choice.lower() == 'good':
+            quality_choice = 4 
+        elif quality_choice.lower() == 'ok': 
+            quality_choice = 3.5
+        else: 
+            quality_choice = -1
+        demo['hotel_rating_hotel'] = quality_choice
+
+        # Calculations  
+        df_quant_cols = ['num_amenities', 'num_rooms', 'hotel_rating_hotel', 'Accessible rooms','Air conditioning', 'Airport transportation', 'Babysitting','Banquet Room', 'Bar/Lounge', 'Breakfast Available','Breakfast included', 'Business Center with Internet Access','Children Activities (Kid / Family Friendly)', 'Concierge','Conference Facilities', 'Dry Cleaning','Electric vehicle charging station', 'Family Rooms','Fitness Center with Gym / Workout Room','Free High Speed Internet (WiFi)', 'Free Internet', 'Free parking','Golf course', 'Heated pool', 'Hot Tub', 'Indoor pool', 'Kitchenette','Laundry Service', 'Meeting rooms', 'Microwave', 'Minibar','Multilingual Staff', 'Non-smoking hotel', 'Non-smoking rooms','Outdoor pool', 'Paid Internet', 'Paid Wifi','Pets Allowed ( Dog / Pet Friendly )', 'Pool', 'Public Wifi','Refrigerator in room', 'Restaurant', 'Room service', 'Sauna','Self-Serve Laundry', 'Shuttle Bus Service', 'Smoking rooms available','Spa', 'Suites', 'Tennis Court', 'Wheelchair access']
+        to_pred = pd.DataFrame.from_dict(demo, orient= 'index').transpose()[df_quant_cols]
+        to_pred = pd.DataFrame(ss.transform(to_pred),index = to_pred.index, columns = to_pred.columns)
+        hotel_predict = hotel.predict(to_pred)[0]
+        review_predict = review.predict(vectorizer.transform([review_input]).todense())[0]
+        results = {}
+        for x in df[(df['hotel_pred'] == hotel_predict) & (df['review_preds'] == review_predict)]['hotel_name'].unique():
+            url = hotel_info[hotel_info['hotel_name'] == x]['url'].values[0]
+            low =  "$"+str(hotel_info[hotel_info['hotel_name'] == x]['low_price'].values[0])[:-2]
+            high =  "$"+str(hotel_info[hotel_info['hotel_name'] == x]['high_price'].values[0])[:-2]
+            results[x] = [low, high, url]
+            if len(results) > 10:
+                break
+        if len(results) == 0:
+            results['No Hotels Exist'] = ["$0","$0",'/tripadvisor/demo']
+    return render_template('tripadvisor_demo.html', results=results, amenities = amenities)
+
+
+
+
 
 @app.route('/aboutme')
 def aboutme():

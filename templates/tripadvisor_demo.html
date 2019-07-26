@@ -1,7 +1,78 @@
 {% extends "tripadvisor.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
-
 {% block tab %}
-{{ test }}
-{{ wtf.quick_form(form)}}
+<h2 class="center-here text-center">
+    Hotel Recommnedation via TripAdvisor 
+</h2>
+<body>
+    Fill out the form below and click submit. My program then will give you a recommnedation on hotels that you 
+    should look into based on your preferences! 
+</body>
+<form method="POST" action="demo1" >
+    <div class="center-here form-group" style = "margin-left: auto; margin-right:auto">
+        <h3>
+           Preferences
+        </h3>
+        <body>
+            Pick all essential amenities from the list: 
+        </body>
+        <table style="margin-left: auto; margin-right: auto;">
+            <div class="checkbox-inline">
+                <label class="checkbox-inline">
+                    {% for k in range(4) %}
+                    <tr>
+                        {% for j in range(4) %}
+                        <td>
+                            <label>
+                                <input type="checkbox" name="{{amenities[4*k+j]}}"
+                                value="{{amenities[4*k+j]}}"> {{amenities[4*k+j]}} &nbsp
+                            </label>
+                        </td>
+                        {%endfor %}
+                    </tr>
+                    {%endfor %}
+                </label>
+            </div>
+
+        </table>
+        <br/>
+        <select class="form-control" name="Size" required>
+            <option selected disabled>Size</option>
+            <option value="Large">Large</option>
+            <option value="Medium">Medium</option>
+            <option value="Small">Small</option>
+        </select>
+        <br />
+        <select class="form-control" name="Quality">
+            <option selected disabled>Quality</option>
+            <option value="Large">Great</option>
+            <option value="Medium">Good</option>
+            <option value="Small">Ok</option>
+        </select>
+        <br />
+
+        <label>Enter your best review below: </label>
+        <textarea type="text" rows="3" class="form-control" name="rawtext" required="false">   </textarea>
+        <br />
+        <button type="reset" class="btn btn-primary"> Clear</button>
+        <button type="submit" class="btn btn-info">Submit</button>
+
+    </div>
+</form>
+{% if results.items()|length > 0 %}
+<div class="container" style="height: 40vh">
+    <h3>
+        Recommended Hotels:
+    </h3>
+    {% for hotel, value in results.items() %}
+    <li>
+        <a
+            href={{value[2]}}>
+        {{hotel}}</a> 
+        <body>
+            From {{value[0]}} - {{value[1]}}
+        </body>
+    </li>
+    {%endfor %}
+</div>
+{%endif %}
 {% endblock %}

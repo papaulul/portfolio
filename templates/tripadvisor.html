@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block page_content %}
-<div style='height: 100vh; overflow-y: auto'>
+<div style='height: 100vh; overflow-y: scroll;'>
     <div class="jumbotron" style="background-image:url(../static/atl2.jpg); background-size: cover; ">
         <h1 class="text-center" style="color: white;">TripAdvisor</h1>
         <img src="{{url_for('static', filename='tripadvisor.png') }}" alt="tripadvisor" class="img-rounded center-block"
@@ -20,8 +20,7 @@
         </div>
     </div>
     <div class="content"
-        style="margin-left: 10%; margin-right: 10%; max-width: 1000px;  font-size: 15px; height: 100vh;">
-
+        style="margin-left: 10%; margin-right: 10%;   font-size: 15px; height: 100vh;">
         {% block tab %}{% endblock %}
     </div>
 
