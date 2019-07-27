@@ -3,7 +3,6 @@ from flask import Flask, render_template, session, redirect, url_for, request
 from flask_bootstrap import Bootstrap 
 from config import config 
 from flask_moment import Moment
-from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime 
 import pandas as pd 
 import pickle
@@ -13,7 +12,6 @@ app = Flask(__name__)
 
 bootstrap = Bootstrap(app)
 moment= Moment()
-db = SQLAlchemy()
 
 @app.route('/')
 def index():
