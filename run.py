@@ -29,25 +29,11 @@ def airbnb_about():
 
 @app.route('/airbnb/analysis')
 def airbnb_analysis():
-    return render_template('airbnb_about.html')
+    return render_template('airbnb_analysis.html')
 
 @app.route('/airbnb/demo')
 def airbnb_demo():
     return render_template('airbnb_about.html')
-
-
-@app.route('/glassdoor')
-def glassdoor():
-    return render_template('glassdoor_about.html')
-@app.route('/glassdoor/about')
-def glassdoor_about():
-    return render_template('glassdoor_about.html')
-@app.route('/glassdoor/analysis')
-def glassdoor_analysis():
-    return render_template('glassdoor_about.html')
-@app.route('/glassdoor/demo')
-def glassdoor_demo():
-    return render_template('glassdoor_about.html')
 
 @app.route('/tripadvisor')
 def tripadvisor():
