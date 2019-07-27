@@ -62,76 +62,59 @@
                             is an open-source python package for scraping website data. The dataset for listings
                             information was provided by <a href="http://insideairbnb.com/get-the-data.html">Inside
                                 Airbnb</a>. For the goal of this project, we need a column that will differentiate
-                            listings that are part of the "plus" program. Unfortunately, that data is not provided 
-                            therefore there is a need for scraping this information. 
+                            listings that are part of the "plus" program. Unfortunately, that data is not provided
+                            therefore there is a need for scraping this information.
                             <br>
                             <br>
-                            Luckily, in the dataset, one of the columns contain the url where the information was 
+                        </p>
+                        <h4 style="margin-left: 3.25%;">
+                            Method 1:
+                        </h4>
+                        <p style="margin-left: 3.25%;">
+
+                            Luckily, in the dataset, one of the columns contain the url where the information was
                             orginally obtained. Using that, I was able to construct a spider that can visit each +90,000
-                            listings. 
-                            <a href="https://www.tripadvisor.com/Hotels-g60898-Atlanta_Georgia-Hotels.html">Link</a>.
+                            listings. The URL are formatted such that it is: airbnb.com/rooms/XXX where XXX is a number.
+                            To determine whether the listing is a Plus listing, we can compare how listing pages look.
                         </p>
                         <img src="{{url_for('static', filename='airbnb_ss1.png') }}" alt="airbnb"
                             class="img-rounded center-block" style="width:75%;">
-                        <p style="margin-left: 3.25%;">
-
-                            <br>
-                            To get information about the hotel, we would click on the hotel name. For an example, if we
-                            clicked on
-                            Country Inn & Suites By Radisson, Atlanta/Galleria Ballpark, GA, we would see the following
-                            page:
-                        </p>
-                        <img src="{{url_for('static', filename='airbnb_ss2.png') }}" alt="tripadvisor"
+                        <img src="{{url_for('static', filename='airbnb_ss2.png') }}" alt="airbnb"
                             class="img-rounded center-block" style="width:75%;">
                         <br>
                         <p style="margin-left: 3.25%;">
-
-                            From this page we'll get the following information:
+                            At the bottom, we see that the Plus listing has a badge (and overall looks nicer than the
+                            regular listing). We can use this fact to easily differentiate listings. By searching for
+                            whether the page contains that badge, we will be able to solve this problem. Although, this
+                            is a simple check for a spider to crawl, Airbnb limits the number of request you can make
+                            every minute. With over 90,000 listings just for Los Angeles, a crawl will take around 18
+                            hours. However, I will be able to find all listings that are plus in my dataset.
                         </p>
-                        <ul class="list-group" style="margin-left: 40%; width: 20%;">
-                            <li class="list-group-item">Hotel Name</li>
-                            <li class="list-group-item">Hotel Rating</li>
-                            <li class="list-group-item">Number of Amenities</li>
-                            <li class="list-group-item">Amenities</li>
-                            <li class="list-group-item">Price Range</li>
-                            <li class="list-group-item">Number of Rooms</li>
-                            <li class="list-group-item">URL</li>
-                        </ul>
+                        <h4 style="margin-left: 3.25%;">
+                            Method 2:
+                        </h4>
                         <p style="margin-left: 3.25%;">
-
-                            Another spider will be used to scrape review data in the same page. An issue I came across
-                            scraping reviews
-                            was that the spider was very inconsistent in expanding the review as shown below
+                            Instead of going through 90,000+ different listing, another way is to scrape the url of 
+                            Plus listings specifically. Below, we see that Airbnb does segment this population for us: 
                         </p>
-                        <img src="{{url_for('static', filename='tripadvisor_ss3.png') }}" alt="tripadvisor"
-                            class="img-rounded center-block" style="width:75%;">
+                        <img src="{{url_for('static', filename='airbnb_ss3.png') }}" alt="airbnb"
+                        class="img-rounded center-block" style="width:75%;">
+                        <br>
                         <p style="margin-left: 3.25%;">
-                            One way to circumvent this was to click on the title of the review, which will reveal a new
-                            page that
-                            contains just the review information
+                            However, when we look at the page, it only shows 300+ different listings. After running a 
+                            spider to crawl through the pages multiple times, it seems that some listings randomly 
+                            filter in and out based on Airbnb's searching algorithm. This spider only takes about 20 
+                            minutes to run, and the results vary with those with the one in the dataset. By doing this 
+                            way, we lose the key to join the dataset and Plus listings (url) as well. 
                         </p>
-                        <img src="{{url_for('static', filename='tripadvisor_ss4.png') }}" alt="tripadvisor"
-                            class="img-rounded center-block" style="width:50%;">
+                        <img src="{{url_for('static', filename='airbnb_ss4.png') }}" alt="airbnb"
+                        class="img-rounded center-block" style="width:75%;">
+                        <br>
                         <p style="margin-left: 3.25%;">
-                            An alternative way would've been to use a package called Selenium. This would've allowed us
-                            to use a browser
-                            such as Chrome or Firefox and perform automated tasks such as clicking javascript items.
-                            Although it was
-                            much faster (since it was able to read 5 reviews at a time and not have to follow through
-                            another url), it
-                            was not as reliable as my current method. With this, we were able to scrape through all of
-                            the reviews in
-                            all of the hotels in Atlanta.
-
-                            <br>
-
-                            To store all of this information, I was able to connect Scrapy to a NoSQL Database using
-                            MongoDB that I have
-                            set up configuring all of my pipelines. At the end of the scrape, I was able to scrape
-                            120,893 reviews and
-                            223 hotels.
-
+                            Even with the benefits of speed, the miss rate was too much for this method. Therefore 
+                            Method 1 was chosen in scraping the Plus listings. 
                         </p>
+                        <br>
                     </p>
 
 
