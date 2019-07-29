@@ -73,7 +73,7 @@
                         <p style="margin-left: 3.25%;">
 
                             Luckily, in the dataset, one of the columns contain the url where the information was
-                            orginally obtained. Using that, I was able to construct a spider that can visit each +90,000
+                            orginally obtained. Using that, I was able to construct a spider that can visit each +40,000
                             listings. The URL are formatted such that it is: airbnb.com/rooms/XXX where XXX is a number.
                             To determine whether the listing is a Plus listing, we can compare how listing pages look.
                         </p>
@@ -87,14 +87,14 @@
                             regular listing). We can use this fact to easily differentiate listings. By searching for
                             whether the page contains that badge, we will be able to solve this problem. Although, this
                             is a simple check for a spider to crawl, Airbnb limits the number of request you can make
-                            every minute. With over 90,000 listings just for Los Angeles, a crawl will take around 18
+                            every minute. With over 40,000 listings just for Los Angeles, a crawl will take around 18
                             hours. However, I will be able to find all listings that are plus in my dataset.
                         </p>
                         <h4 style="margin-left: 3.25%;">
                             Method 2:
                         </h4>
                         <p style="margin-left: 3.25%;">
-                            Instead of going through 90,000+ different listing, another way is to scrape the url of 
+                            Instead of going through 40,000+ different listing, another way is to scrape the url of 
                             Plus listings specifically. Below, we see that Airbnb does segment this population for us: 
                         </p>
                         <img src="{{url_for('static', filename='airbnb_ss3.png') }}" alt="airbnb"
