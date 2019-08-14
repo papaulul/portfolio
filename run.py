@@ -78,48 +78,53 @@ def tripadvisor_process():
                     demo[amen] = False
         demo['num_amenities'] = sum(demo.values())
         review_input = request.form['rawtext']
-        size_choice = request.form['Size']
-        if size_choice.lower() == 'large':
-            size_choice = 243.50
-        elif size_choice.lower() == 'medium':
-            size_choice = 147.70
-        elif size_choice.lower() == 'small':
-            size_choice = 100.00
-        else: 
+        try:
+            size_choice = request.form['Size']
+            if size_choice.lower() == 'large':
+                size_choice = 243.50
+            elif size_choice.lower() == 'medium':
+                size_choice = 147.70
+            elif size_choice.lower() == 'small':
+                size_choice = 100.00
+        except: 
             size_choice = -1
         demo['num_rooms']  = size_choice        
-        quality_choice = request.form['Quality']
-        if quality_choice.lower() == 'great':
-            quality_choice = 5
-        elif quality_choice.lower() == 'good':
-            quality_choice = 4 
-        elif quality_choice.lower() == 'ok': 
-            quality_choice = 3.5
-        else: 
+
+        try:
+            quality_choice = request.form['Quality']
+            if quality_choice.lower() == 'great':
+                quality_choice = 5
+            elif quality_choice.lower() == 'good':
+                quality_choice = 4 
+            elif quality_choice.lower() == 'ok': 
+                quality_choice = 3.5
+        except: 
             quality_choice = -1
+
         demo['hotel_rating_hotel'] = quality_choice
-
-        # Calculations  
-        df_quant_cols = ['num_amenities', 'num_rooms', 'hotel_rating_hotel', 'Accessible rooms','Air conditioning', 'Airport transportation', 'Babysitting','Banquet Room', 'Bar/Lounge', 'Breakfast Available','Breakfast included', 'Business Center with Internet Access','Children Activities (Kid / Family Friendly)', 'Concierge','Conference Facilities', 'Dry Cleaning','Electric vehicle charging station', 'Family Rooms','Fitness Center with Gym / Workout Room','Free High Speed Internet (WiFi)', 'Free Internet', 'Free parking','Golf course', 'Heated pool', 'Hot Tub', 'Indoor pool', 'Kitchenette','Laundry Service', 'Meeting rooms', 'Microwave', 'Minibar','Multilingual Staff', 'Non-smoking hotel', 'Non-smoking rooms','Outdoor pool', 'Paid Internet', 'Paid Wifi','Pets Allowed ( Dog / Pet Friendly )', 'Pool', 'Public Wifi','Refrigerator in room', 'Restaurant', 'Room service', 'Sauna','Self-Serve Laundry', 'Shuttle Bus Service', 'Smoking rooms available','Spa', 'Suites', 'Tennis Court', 'Wheelchair access']
-        to_pred = pd.DataFrame.from_dict(demo, orient= 'index').transpose()[df_quant_cols]
-        to_pred = pd.DataFrame(ss.transform(to_pred),index = to_pred.index, columns = to_pred.columns)
-        hotel_predict = hotel.predict(to_pred)[0]
-        review_predict = review.predict(vectorizer.transform([review_input]).todense())[0]
-        results = {}
-        for x in df[(df['hotel_pred'] == hotel_predict) & (df['review_preds'] == review_predict)]['hotel_name'].unique():
-            url = hotel_info[hotel_info['hotel_name'] == x]['url'].values[0]
-            low =  "$"+str(hotel_info[hotel_info['hotel_name'] == x]['low_price'].values[0])[:-2]
-            high =  "$"+str(hotel_info[hotel_info['hotel_name'] == x]['high_price'].values[0])[:-2]
-            results[x] = [low, high, url]
-            if len(results) > 10:
-                break
-        if len(results) == 0:
+        if quality_choice == -1 or size_choice == -1:
+            results = {}
             results['No Hotels Exist'] = ["$0","$0",'/tripadvisor/demo']
-    return render_template('tripadvisor_demo.html', results=results, amenities = amenities)
-
-
-
-
+        else:
+            # Calculations  
+            df_quant_cols = ['num_amenities', 'num_rooms', 'hotel_rating_hotel', 'Accessible rooms','Air conditioning', 'Airport transportation', 'Babysitting','Banquet Room', 'Bar/Lounge', 'Breakfast Available','Breakfast included', 'Business Center with Internet Access','Children Activities (Kid / Family Friendly)', 'Concierge','Conference Facilities', 'Dry Cleaning','Electric vehicle charging station', 'Family Rooms','Fitness Center with Gym / Workout Room','Free High Speed Internet (WiFi)', 'Free Internet', 'Free parking','Golf course', 'Heated pool', 'Hot Tub', 'Indoor pool', 'Kitchenette','Laundry Service', 'Meeting rooms', 'Microwave', 'Minibar','Multilingual Staff', 'Non-smoking hotel', 'Non-smoking rooms','Outdoor pool', 'Paid Internet', 'Paid Wifi','Pets Allowed ( Dog / Pet Friendly )', 'Pool', 'Public Wifi','Refrigerator in room', 'Restaurant', 'Room service', 'Sauna','Self-Serve Laundry', 'Shuttle Bus Service', 'Smoking rooms available','Spa', 'Suites', 'Tennis Court', 'Wheelchair access']
+            to_pred = pd.DataFrame.from_dict(demo, orient= 'index').transpose()[df_quant_cols]
+            to_pred = pd.DataFrame(ss.transform(to_pred),index = to_pred.index, columns = to_pred.columns)
+            hotel_predict = hotel.predict(to_pred)[0]
+            review_predict = review.predict(vectorizer.transform([review_input]).todense())[0]
+            results = {}
+            for x in df[(df['hotel_pred'] == hotel_predict) & (df['review_preds'] == review_predict)]['hotel_name'].unique():
+                url = hotel_info[hotel_info['hotel_name'] == x]['url'].values[0]
+                low =  "$"+str(hotel_info[hotel_info['hotel_name'] == x]['low_price'].values[0])[:-2]
+                high =  "$"+str(hotel_info[hotel_info['hotel_name'] == x]['high_price'].values[0])[:-2]
+                results[x] = [low, high, url]
+                if len(results) > 10:
+                    break
+            if len(results) == 0:
+                results['No Hotels Exist'] = ["$0","$0",'/tripadvisor/demo']
+        return render_template('tripadvisor_demo.html', results=results, amenities = amenities, demo = demo)
+    else:
+        return render_template('tripadvisor_demo.html')
 
 @app.route('/aboutme')
 def aboutme():

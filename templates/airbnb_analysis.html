@@ -2,6 +2,19 @@
 
 {% block tab %}
 <div class="container.fluid">
+    <h1>Table of Contents</h1>
+    <div class="text-center">
+        <ul class="list-group" style="margin-left: 5%; width: 300px; font-size:  24px">
+            <li class="list-group-item"> <a href="#headingOne">Tools</a>
+            </li>
+            <li class="list-group-item"> <a href="#headingTwo">Scrape</a>
+            </li>
+            <li class="list-group-item"> <a href="#headingThree">Exploratory Data Analysis</a>
+            </li>
+            <li class="list-group-item"> <a href="#headingFour">Modeling</a>
+            </li>
+        </ul>
+    </div>
     <div class="accordion" id="accordionExample">
 
         <div class="card">
@@ -20,12 +33,10 @@
                             <ul class="list-group" style="margin-left: 5%; width: 200px;">
                                 <li class="list-group-item">Python 3</li>
                                 <li class="list-group-item">Scrapy</li>
-                                <li class="list-group-item">MongoDB</li>
-                                <li class="list-group-item">PyMongo</li>
                                 <li class="list-group-item">Scikit-Learn</li>
                                 <li class="list-group-item">Matplot-lib</li>
                                 <li class="list-group-item">Seaborn</li>
-                                <li class="list-group-item">NLTK</li>
+                                <li class="list-group-item">XGBoost</li>
                             </ul>
                         </div>
 
@@ -62,7 +73,7 @@
                             is an open-source python package for scraping website data. The dataset for listings
                             information was provided by <a href="http://insideairbnb.com/get-the-data.html">Inside
                                 Airbnb</a>. For the goal of this project, we need a column that will differentiate
-                            listings that are part of the "plus" program. Unfortunately, that data is not provided
+                            listings that are part of the "Plus" program. Unfortunately, that data is not provided
                             therefore there is a need for scraping this information.
                             <br>
                             <br>
@@ -79,6 +90,7 @@
                         </p>
                         <img src="{{url_for('static', filename='airbnb_ss1.png') }}" alt="airbnb"
                             class="img-rounded center-block" style="width:75%;">
+                        <br><br>
                         <img src="{{url_for('static', filename='airbnb_ss2.png') }}" alt="airbnb"
                             class="img-rounded center-block" style="width:75%;">
                         <br>
@@ -88,37 +100,34 @@
                             whether the page contains that badge, we will be able to solve this problem. Although, this
                             is a simple check for a spider to crawl, Airbnb limits the number of request you can make
                             every minute. With over 40,000 listings just for Los Angeles, a crawl will take around 18
-                            hours. However, I will be able to find all listings that are plus in my dataset.
+                            hours. However, I will be able to find all listings that are Plus in my dataset.
                         </p>
                         <h4 style="margin-left: 3.25%;">
                             Method 2:
                         </h4>
                         <p style="margin-left: 3.25%;">
-                            Instead of going through 40,000+ different listing, another way is to scrape the url of 
-                            Plus listings specifically. Below, we see that Airbnb does segment this population for us: 
+                            Instead of going through 40,000+ different listing, another way is to scrape the url of
+                            Plus listings specifically. Below, we see that Airbnb does segment this population for us:
                         </p>
                         <img src="{{url_for('static', filename='airbnb_ss3.png') }}" alt="airbnb"
-                        class="img-rounded center-block" style="width:75%;">
+                            class="img-rounded center-block" style="width:75%;">
                         <br>
                         <p style="margin-left: 3.25%;">
-                            However, when we look at the page, it only shows 300+ different listings. After running a 
-                            spider to crawl through the pages multiple times, it seems that some listings randomly 
-                            filter in and out based on Airbnb's searching algorithm. This spider only takes about 20 
-                            minutes to run, and the results vary with those with the one in the dataset. By doing this 
-                            way, we lose the key to join the dataset and Plus listings (url) as well. 
+                            However, when we look at the page, it only shows 300+ different listings. After running a
+                            spider to crawl through the pages multiple times, it seems that some listings randomly
+                            filter in and out based on Airbnb's searching algorithm. This spider only takes about 20
+                            minutes to run, and the results vary with those with the one in the dataset. By doing this
+                            way, we lose the key to join the dataset and Plus listings (url) as well.
                         </p>
                         <img src="{{url_for('static', filename='airbnb_ss4.png') }}" alt="airbnb"
-                        class="img-rounded center-block" style="width:75%;">
+                            class="img-rounded center-block" style="width:75%;">
                         <br>
                         <p style="margin-left: 3.25%;">
-                            Even with the benefits of speed, the miss rate was too much for this method. Therefore 
-                            Method 1 was chosen in scraping the Plus listings. 
+                            Even with the benefits of speed, the miss rate was too much for this method. Therefore
+                            Method 1 was chosen in scraping the Plus listings.
                         </p>
                         <br>
                     </p>
-
-
-
                 </div>
             </div>
         </div>
@@ -137,132 +146,199 @@
             <div id="collapseThree" class="collapse in" aria-labelledby="headingThree" data-parent="#accordionExample">
                 <div class="card-body">
                     <p style="margin-left: 3.25%;">
-                        We will be working with 2 different datatsets. However one will contain hotel
-                        information, and the other will contain all of the review information. In the end we will merge
-                        both of these tables to make sure we're working with the correct data. However, there are some
-                        hotels that do not have reviews. For our model(s) to give the best recommendations, we will not
-                        be working with these hotels. This decreases our hotel count from 223 to 150 to look at.
+                        We'll be looking at the Airbnb listings for Los Angeles and San Fransico based on data from
+                        <a href="http://insideairbnb.com/get-the-data.html">Inside Airbnb</a>. The datasets originally
+                        had <b>108</b> columns from the July 8th scrape. The Los Angeles data set contained
+                        <b>44,620</b> rows and San Fransico had <b>7,738</b> rows. With this large descrepincies between
+                        listing population, we will be using Los Angeles as the Training set and San Fransico as the
+                        Out of Sample Validation set.
                         <br><br>
-                        First thing we need to see is some descriptive statistics of amongst hotels.
-                        <p>
-                            <p style="margin-left: 3.25%;">
-                                <div class="panel panel-default">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Descriptive Statistics</th>
-                                                <th scope="col">Mean</th>
-                                                <th scope="col">St. Deviation</th>
-                                                <th scope="col">Minimum</th>
-                                                <th scope="col">Maximum</th>
-                                                <th scope="col">Median</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th scope="row">Number of Amenities</th>
-                                                <td>20.607</td>
-                                                <td>5.652</td>
-                                                <td>5</td>
-                                                <td>34</td>
-                                                <td>22</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">Number of Reviews</th>
-                                                <td>757.493</td>
-                                                <td>874.343</td>
-                                                <td>57</td>
-                                                <td>7013</td>
-                                                <td>535.5</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">Hotel Rating</th>
-                                                <td>3.873</td>
-                                                <td>0.608</td>
-                                                <td>1.5</td>
-                                                <td>5</td>
-                                                <td>4</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">Lowest Priced Room</th>
-                                                <td>$140.96</td>
-                                                <td>$60.70</td>
-                                                <td>$54.00</td>
-                                                <td>$588.00</td>
-                                                <td>$134.50</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">Highest Priced Room</th>
-                                                <td>$307.31</td>
-                                                <td>$156.08</td>
-                                                <td>$94.00</td>
-                                                <td>$1387.00</td>
-                                                <td>$276.00</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </p>
-                            <h3 style="font-size: 25px ; margin-left:2%;">Plots:</h3>
+                        From these populations, Los Angeles has <b>1072</b> Plus listings and San Fransico has
+                        <b>253</b>
+                        <br><br>
+                        Airbnb also have a program for Hosts called <b>Superhost</b>. By being a Superhost, you will
+                        have a badge next all of your listings, which indicates that you are verified to be a good host
+                        in the eyes of Airbnb. To become a Superhost, you need to follow several criteria including:
+                        maintaining a 4.8 rating or higher, less than 1% cancel rate, and more. These criteria, line up
+                        with some of the requirements to have a Plus listing. One of my assumption going forward is that
+                        to be eligible to get a Plus listing, you would need to be a Superhost. This isn't necessarily
+                        completely true, due to the fact that you can lose your Superhost status even if your listing
+                        was made into a Plus listing. Even with this fact, we can remove some noise by following my
+                        assumption. By removing the listings that aren't Superhost or Plus, we are left with
+                        <b>13,329</b> listings in Los Angeles and <b>3,168</b>.
 
-                            <p style="margin-left: 3.25%;">
-                                There are some interesting tidbits we can extract from this information:
-                                <li style="margin-left: 5%; ">
-                                    We'll probably see some outliers in the data based on what we see in the median and
-                                    maximum.
-                                </li>
-                                <li style="margin-left: 5%; ">
-                                    If we consider 3 stars to be neutral, most hotels are considered positive.
-                                </li>
-                                <li style="margin-left: 5%; ">
-                                    Price seems be overlap in terms of the most expensive cheapest room is more
-                                    expensive than the cheapest expensive room.
-                                </li>
-                                <hr>
-                            </p>
-                            <p style="margin-left: 3.25%;">
-                                <img src="{{url_for('static', filename='TripAdvisor_fig1.png') }}" alt="tripadvisor"
-                                    class="img-rounded center-block" style="width:75%;">
-                                We definitely see that the number of reviews is right skewed. This is backed up by our
-                                descriptive statistics with our mean being much bigger than our median. We can try to
-                                fix this distribution later in some transformations later on.
-                                <hr>
-                            </p>
-                            <p style="margin-left: 3.25%;">
-                                Since I was able to scrape almost every review, I could see if the stars provided by
-                                TripAdvisor are actually accurate to what reviewers are saying.
-                                <img src="{{url_for('static', filename='TripAdvisor_fig2.png') }}" alt="tripadvisor"
-                                    class="img-rounded center-block" style="width:60%;">
-                                For the most part, we see that it follows a linear path. Which is fine, it was an
-                                assumption that they would round to the nearest half value.
-                                <hr>
-                            </p>
-                            <p style="margin-left: 3.25%;">
-                                One thing I want to see was whether just the sheer number of amenities would have a
-                                relationship with the Hotel rating.
-                                <img src="{{url_for('static', filename='TripAdvisor_fig3.png') }}" alt="tripadvisor"
-                                    class="img-rounded center-block" style="width:75%;">
-                                We see from the violin chart, that it does seem to increase slightly, but then on the 5
-                                stars have a lower amount. We also see that some of the distributions are skewed amongst
-                                the stars, which we will need to look out for.
-                                <hr>
-                            </p>
-                            <p style="margin-left: 3.25%;">
-                                Finally, we'll look at high and low price according to the hotel rating. The general
-                                thought would be, the better the hotel, the more expensive it would be.
-                                <img src="{{url_for('static', filename='TripAdvisor_fig5.png') }}" alt="tripadvisor"
-                                    class="img-rounded center-block" style="width:75%;">
-                                <img src="{{url_for('static', filename='TripAdvisor_fig6.png') }}" alt="tripadvisor"
-                                    class="img-rounded center-block" style="width:75%;">
-                                We see that it does follow this trend, however those rated 1.5 and 2 stars do not seem
-                                to follow this trend at all.
-                            </p>
-                        </p>
+                        <br><br>
+                        For this particular stage of the project, I will not use some columns from the original 108.
+                        I will be removing columns that contain location data (besides longitude and latitude), text
+                        data, empty columns, and columns with one unique value. For the text data, I will potentially
+                        use it for another project analyzing reviews and if the contents are indications of Plus
+                        listings.
+                        <br>
+                    </p>
+                    <h4 style="margin-left: 3.25%;">
+                        Location:
+                    </h4>
+                    <p style="margin-left: 3.25%;">
+                        When we look at the Latitude and Longitude of the data, we can see the location of all of the
+                        listings we have to work with. Below, we see how the Los Angeles Plot looks with those listings
+                        under $500.
+                    </p>
+                    <img src="{{url_for('static', filename='LA_500_1.png') }}" alt="airbnb"
+                        class="img-rounded center-block" style="width:75%;">
+                    <br>
+                    <p style="margin-left: 3.25%;">
+                        We see some outliers with listings above latitude 34.3 and below 33.5. When we replot it without
+                        those outliers, we see a much clearer picture
+                    </p>
+                    <img src="{{url_for('static', filename='LA_500_2.png') }}" alt="airbnb"
+                        class="img-rounded center-block" style="width:75%;">
+                    <br>
+                    <p style="margin-left: 3.25%;">
+                        I tried to do the same thing with the San Fransico data to see if there were any to remove,
+                        however it seemed everything was fine.
+                    </p>
+                    <img src="{{url_for('static', filename='SF_500.png') }}" alt="airbnb"
+                        class="img-rounded center-block" style="width:75%;">
+                    <br>
+                    <p style="margin-left: 3.25%;">
+                        Since the goal is to create a product that can give you a prediction based on any city, latitude
+                        and longitude will only be used when transformed. New features will be created where latitude
+                        and longitude will be converted into the Manhattan Distance to the average latitude and
+                        longitude of every listing.
+                        <br>
+                    </p>
+                    <h4 style="margin-left: 3.25%;">
+                        Amenities:
+                    </h4>
+                    <p style="margin-left: 3.25%;">
+                        For a Plus listing, Airbnb expects all of their listings to contain certain essential amenities
+                        for the guests. On their
+                        <a href="https://www.airbnb.com/d/plushomechecklist">
+                            website</a> they mention things like: coffee, luggage rack, large mirror, and much more. The
+                        dataset provides us a list of all amenities that the listing contains, however, it does not
+                        indicate which amenities they do not have. Another assumption has been made that all amenities
+                        listing in the table are those that are avaliable in the listing and any other are absent.
+                        <br><br>
+                        After looking through each listings from both locations, there were <b>241</b> unique amenities.
+                        However, there seem to be similar amenities such as "Sonos Sound System" and "Sound System".
+                        Regardless of the granularity of the amenities, every unique amenity was turned into an
+                        indicator column for each listing.
+                        <br><br>
+                        If we were to just leave all 241 columns in the dataset, we would start overfitting and fall
+                        into the <b>Curse of Dimensionality</b>. I wanted to narrow down the amenities while not losing
+                        too much information. I decided to use a statistical method called <b>Jaccard Similarity
+                            Coefficient</b> to determine the amenities that are the most similar with the Plus listing
+                        indicator. I can do this because all of the amenitiy columns are indicators as well.
+                        <br><br>
+                        Jaccard Similarity Coefficient, also known as Jaccard Index, measures similarity between sets,
+                        and is defined as the size of the intersection divided by the size of the union of the sets.
+                    </p>
+                    <a href="https://en.wikipedia.org/wiki/Jaccard_index#Probability_Jaccard_similarity_and_distance">
+                        <img src="{{url_for('static', filename='jaccard_vis.png') }}" alt="airbnb"
+                            class="img-rounded center-block" style="width:25%;">
+                    </a>
+                    <br>
+                    <p style="margin-left: 3.25%;">
+                        From the visual above, we see the closer the staistic is to 1, the more similar they are. Once
+                        we ran all of the amenities and found the Index, some of the most similar amenities are (in
+                        order):
+                    </p>
+                    <div class="text-center" style="margin-left: 34%; margin-right: 34%">
+                        <ul class="list-group " style="margin-left: 5%; width: 300px; height: 360px;overflow-y:auto;">
+                            <li class="list-group-item">Bathroom essentials</li>
+                            <li class="list-group-item">Full kitchen</li>
+                            <li class="list-group-item">Family/kid friendly</li>
+                            <li class="list-group-item">Extra pillows and blankets</li>
+                            <li class="list-group-item">Smart TV</li>
+                            <li class="list-group-item">Self check-in</li>
+                            <li class="list-group-item">TV</li>
+                            <li class="list-group-item">Netflix</li>
+                            <li class="list-group-item">Internet</li>
+                            <li class="list-group-item">Luggage dropoff allowed</li>
+                            <li class="list-group-item">Cable TV</li>
+                            <li class="list-group-item">Cooking basics</li>
+                            <li class="list-group-item">Gas oven</li>
+                            <li class="list-group-item">First aid kit</li>
+                            <li class="list-group-item">Walk-in shower</li>
+                            <li class="list-group-item">Patio or balcony</li>
+                            <li class="list-group-item">Free street parking</li>
+                            <li class="list-group-item">Garden or backyard</li>
+                            <li class="list-group-item">Dishwasher</li>
+                            <li class="list-group-item">Long term stays allowed</li>
+                            <li class="list-group-item">24-hour check-in</li>
+                            <li class="list-group-item">Room-darkening shades</li>
+                            <li class="list-group-item">Free parking on premises</li>
+                            <li class="list-group-item">Indoor fireplace</li>
+                            <li class="list-group-item">Private entrance</li>
+                            <li class="list-group-item">En suite bathroom</li>
+                            <li class="list-group-item">BBQ grill</li>
+                            <li class="list-group-item">Lock on bedroom door</li>
+                            <li class="list-group-item">Safety card</li>
+                        </ul>
+                    </div>
+
+                    <h3 style="font-size: 25px ; margin-left:2%;">Data Cleaning:</h3>
+                    <h4 style="margin-left: 3.25%;">
+                        Variable Reduction:
+                    </h4>
+                    <p style="margin-left: 3.25%;">
+                        To make sure, there are variables that won't hamper the model's production, I had to
+                        remove/reduce some variables from the table. Above I mentioned how I reduced the different
+                        indicators from the amenities features, I am looked at correlation between every variable. If
+                        there exists variables that are very correlated in the model, they can pose a risk of counting
+                        double. Such as total reviews versus reviews per month, these variables would have somewhat
+                        of a correlation since reviews per month is derived from total reviews from the listing. By
+                        removing these variables, we would reduce the noise for our model.
+                    </p>
+                    <h4 style="margin-left: 3.25%;">
+                        Skewness:
+                    </h4>
+                    <p style="margin-left: 3.25%;">
+                        Although it is not always necessary to fix the skewness of the data, I wanted to look over the
+                        variables that are numeric and see if a log transformation would help the model. For example,
+                        I transformed the cleaning fee below:
+                    </p>
+                    <img src="{{url_for('static', filename='LA_cleaning_fee.png') }}" alt="airbnb"
+                        class="img-rounded center-block" style="width:65%;">
+                    <br>
+                    <img src="{{url_for('static', filename='LA_cleaning_fee_log.png') }}" alt="airbnb"
+                        class="img-rounded center-block" style="width:65%;">
+                    <br>
+                    <p style="margin-left: 3.25%;">
+                        The one disadvantage of using a log transformation is that when the value is 0, we get an NAN
+                        value. I had it so that if the original value is 0, it would not go through the transformation
+                        and stay at 0.
+
+                        <br><br>
+
+                        I also scaled all numeric columns by a standard scaler to make sure that all of the values
+                        are around the same range. Therefore if there are any outliers, they wouldn't have much of
+                        an effect on the model. This was added later, and it proved to provide some boost in
+                        performance.
+                    </p>
+
+                    <h4 style="margin-left: 3.25%;">
+                        Missing Imputation:
+                    </h4>
+                    <p style="margin-left: 3.25%;">
+                        Unfortunately for both datasets, they were not clean and devoid of missing values. There were
+                        some missing that made sense, such as all missing reviews per month values are because the
+                        listings did not have any reviews in the first place.
+                    </p>
+                    <img src="{{url_for('static', filename='is_na.png') }}" alt="airbnb"
+                        class="img-rounded center-block" style="width:80%;">
+                    <br>
+                    <p style="margin-left: 3.25%;">
+                        As we see above, there seem to be NAN values on columns that deal with reviews consistantly.
+                        This deals with the issue of not having any reviews for that listing. To deal with these
+                        columns, I decided to apply linear regression to fit each review column. I would then plug in
+                        the values from the columns from the missing reviews and try to predict the values. We also see
+                        columns like security deposit which is mainly NAN. We will remove columns like that.
+                    </p>
                 </div>
             </div>
         </div>
         <hr style="border-color: #bfbfbf ; ">
-
         <div class="card">
             <div class="card-header" id="headingFour">
                 <h5 class="mb-0">
@@ -276,79 +352,426 @@
             <div id="collapseFour" class="collapse in" aria-labelledby="headingFour" data-parent="#accordionExample">
                 <div class="card-body">
                     <p style="margin-left: 3.25%;">
-                        I decided to utilize Microsoft's Azure cloud services to perform most of the heavy lifting in my
-                        modeling. My approach to find the best hotel for the user is to:
-                        <li style="margin-left: 5%;">Cluster by hotel information</li>
-                        <li style="margin-left: 5%;">Cluster by reviews</li>
-                        <li style="margin-left: 5%;">Match user's preferences to Hotel and Reviews</li>
+                        After data preparations, the each table have <b>61</b> columns. Since the dataset isn't too big,
+                        everything will be ran locally. With this being a <b>supervised learning</b> problem,
+                        traditional machine learning techniques could be used (specifically, a classification
+                        problem). I will look into four differnt models:
+                        <li style="margin-left: 5%;">Logistic Regression</li>
+                        <li style="margin-left: 5%;">Bernoulli Naive Bayes</li>
+                        <li style="margin-left: 5%;">Random Forest</li>
+                        <li style="margin-left: 5%;">XGBoost</li>
                     </p>
                     <p style="margin-left: 3.25%;">
-                        A factor I decided to keep out of the models was price of the hotel rooms. This is becasue I
-                        wanted the user to have a choice between hotels that are similar in everything but price.
-                        Therefore they can choose the hotel based on their budget.
-                    </p>
-                    <h3 style="font-size: 25px ; margin-left:2%;">Hotel Cluster:</h3>
-                    <p style="margin-left: 3.25%;">
-                        Since the hotel data set is already small (150 hotels), I was hoping that we might be able to
-                        find a good separation between clusters. There are some numerical values within the information
-                        scraped, so we needed to scale everything to the same range. K-Means is an unsupervised machine
-                        learning model. Although we can pick any number of clusters for our model, I used the <a
-                            href="https://en.wikipedia.org/wiki/Elbow_method_(clustering)">
-                            elbow method</a> to determine the optimal amount. We need to calculate the inertia or
-                        within-cluster sum-of-squares criterion of each point, which is just the sum of squares of each
-                        point minus the closest cluster. These calculations will let us know how close each point are to
-                        their cluster. The higher the inertia it is, the worse the model is considered. However, it is
-                        known that we can always get the inertia lower by adding more centers, and to completely
-                        minimize inertia, we could just pick the number of centers to equal the number of rows. This
-                        would defeat the whole point of trying to cluster the points together. Instead, by looking at
-                        the elbow, or the point where the model suddenly decreases its rate of approaching that perfect
-                        inertia, we can pick that as our "best" number of centers.
-                    </p>
-                    <img src="{{url_for('static', filename='silhouette1.png') }}" alt="tripadvisor"
-                        class="img-rounded center-block" style="width:50%;">
-                    <p style="margin-left: 3.25%;">
-                        Although theoretically, the elbow method is a great way of choosing the centers, it does not
-                        always come up clean. As we see above, it just looks like the curve just keeps decreasing. I
-                        didn't want to choose a number too high, so I decided 30 would be our center based on how the
-                        rate changed.
-
-                        <br>
-
-                        After picking the number of centers, I modeled again over the data as our final model using 30
-                        as our centers. I then saved that model to be used later in the <a
-                            href="/tripadvisor/demo">demo</a>.
-                        Then I created a column as cluster where each row is assigned to a cluster 0-29.
-                    </p>
-                    <h3 style="font-size: 25px ; margin-left:2%;">Review Cluster:</h3>
-                    <p style="margin-left: 3.25%;">
-                        The overall goal of clustering the reviews is to find reviews that would closely match those of
-                        the user. This would be useful if the user has written a review of a hotel where they had a
-                        great time and now they can find users who had similar experiences at different hotels.
-                        <br><br>
-                        I followed a methodology close to the Hotel Cluster to achieve our goal. However, since I'm
-                        now dealing with words and not model we cannot just model that. Instead we need to convert these
-                        words into some numeric values. I employed using Term Frequency-Inverse Document Frequency
-                        (Tf-IDF). Tf-IDF is a statistical tool that allows to learn the importance of a word is to a
-                        document in the corpus. Essentially, by looking at the frequency in the word vs the inverse of
-                        the frequency of the type of document from the population of all of our reviews. Therefore to
-                        think about this, every review I scraped would be the corpus, each review would be the document,
-                        and words in said review would be the words. This method would allow us to rank the words based
-                        on prevalance within the documents. Thus changing our words into meaningful numbers that we can
-                        use to cluster.
-                        <br><br>
-                        Now we look for our elbow curve once again.
-                    </p>
-                    <img src="{{url_for('static', filename='silhouette.png') }}" alt="tripadvisor"
-                        class="img-rounded center-block" style="width:50%;">
-
-                    <p style="margin-left: 3.25%;">
-                        We can see that the elbow is much more clearer than our previous one. It is at around 200, so
-                        we will proceed with that number. We again save the model, and run it on each review. We assign
-                        them to a cluster from 0 to 199 write it on the table.
+                        Each model have different parameters to tune to ensure best performance. The forest type models,
+                        Random Forest and XGBoost, have much more parameters to tune. Therefore, I used <b>Random
+                            Grid Search</b> to find the best parameters. This allows me to reduce compute time and
+                        expand the number of parameters to check.
 
                         <br><br>
-                        To demonstrate how this works in application, proceed to the <a
-                            href="/tripadvisor/demo">demo</a>!
+
+                        After getting the best parameters, I needed to choose between the four models. To evaluate each
+                        model's perfomance, I looked into using <b>Stratified K-fold Method</b> with K=5. By keeping it
+                        stratified, each test and train splits will have the same percentage of Plus listings. Allowing
+                        each set to be representative of the rate of Plus listings.
+
+                        <br><br>
+
+                        Normally in a classification problem, we look at the accuracy of the model. However, the
+                        dataset is unbalanced; so, if our model guessed every listing is not Plus, it will achieve a
+                        <b>92%</b> accuracy. This is would just incentiveize the model to have more False Negatives
+                        than False Positives. For this particular problem, <b>False Positives are not the worst things
+                            to have</b>. This would indicate these listings aren't actually Plus listings, but are
+                        similar
+                        enough to the Plus listings.
+
+                        <br><br>
+
+                        Since we want models that have lower False Negatives, I devised a metric where we divide False
+                        Negatives by the sum of False Negative, False Positive, and True Positives. Meaning that the
+                        closer the metric is to 0, the less False Negatives there are. I didn't include True Negatives
+                        because I'm primarily focused on True Positives.
+                    </p>
+                    <p>
+                        <p style="margin-left: 20%;">
+                            <div class="panel panel-default" style="width: 80%;margin-left: 10%;">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col"></th>
+                                            <th scope="col">Bernoulli Naive Bayes</th>
+                                            <th scope="col">Logistic Regression</th>
+                                            <th scope="col">Random Forest</th>
+                                            <th scope="col">XGBoost</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">Average Metric</th>
+                                            <td>0.2090967</td>
+                                            <td>0.548142</td>
+                                            <td>0.570952</td>
+                                            <td>0.491743</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Minimum Metric</th>
+                                            <td>0.175</td>
+                                            <td>0.514056</td>
+                                            <td>0.52</td>
+                                            <td>0.442308</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Maximum Metric</th>
+                                            <td>0.234672</td>
+                                            <td>0.597610</td>
+                                            <td>0.634454</td>
+                                            <td>0.553785</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </p>
+                    </p>
+                    <p style="margin-left: 3.25%;">
+                        Looking at these values, we see that the Bernoulli Naive Bayes by far beat the other models.
+                        The other models had more False Negatives that I decided to investigate ways to deal with
+                        class imbalance.
+                    </p>
+                    <h4 style="margin-left: 3.25%;">
+                        Undersampling:
+                    </h4>
+                    <p style="margin-left: 3.25%;">
+                        The method I decided to implement was undersampling. This is where you keep all of your target
+                        rows and then take a random sample without replacement of the other rows to match the number of
+                        Plus listings. Now the model will be trained on ~2,000 rows. I then perform the same K-fold
+                        procedure above and get the following:
+                    </p>
+                    <p>
+                        <p style="margin-left: 20%;">
+                            <div class="panel panel-default" style="width: 80%;margin-left: 10%;">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col"></th>
+                                            <th scope="col">Bernoulli Naive Bayes</th>
+                                            <th scope="col">Logistic Regression</th>
+                                            <th scope="col">Random Forest</th>
+                                            <th scope="col">XGBoost</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">Average Metric</th>
+                                            <td>0.218318</td>
+                                            <td>0.147034</td>
+                                            <td>0.112936</td>
+                                            <td>0.127920</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Minimum Metric</th>
+                                            <td>0.176056</td>
+                                            <td>0.096525</td>
+                                            <td>0.084291</td>
+                                            <td>0.103846</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Maximum Metric</th>
+                                            <td>0.261905</td>
+                                            <td>0.167364</td>
+                                            <td>0.128514</td>
+                                            <td>0.153846</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </p>
+                    </p>
+                    <p style="margin-left: 3.25%;">
+                        We see above, that the Random Forest Model performed the best. Bernoulli actually got worse from
+                        the previous method which seems odd. However, despite Random Forest's performance on my metric,
+                        I decided to move on with Logistic and XGBoost for further analysis. This is because the
+                        computational cost/time to run the Random Forest did not justify the boost of performance
+                        between it and the other two models.
+                    </p>
+                    <h4 style="margin-left: 3.25%;">
+                        Analysis:
+                    </h4>
+                    <p style="margin-left: 3.25%;">
+                        I wanted to go deeper in how well model would perform on things like the full dataset while
+                        being trained on the undersample set. I didn't want to choose outright from the K-fold method
+                        because Logistic had a run with the better performance (the minimum in the metric), but XGBoost
+                        consistently does better. So, I got reports on how well each perform holistically:
+                    </p>
+                    <p>
+                        <p style="margin-left: 20%;">
+                            <div class="panel panel-default" style="width: 80%;margin-left: 10%;">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">XGBoost</th>
+                                            <th scope="col">Percision</th>
+                                            <th scope="col">Recall</th>
+                                            <th scope="col">F1-Score</th>
+                                            <th scope="col">Support</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">not Plus</th>
+                                            <td>1.00</td>
+                                            <td>0.84</td>
+                                            <td>0.91</td>
+                                            <td>12046</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Plus</th>
+                                            <td>0.35</td>
+                                            <td>0.96</td>
+                                            <td>0.51</td>
+                                            <td>1072</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Accuracy</th>
+                                            <td></td>
+                                            <td></td>
+                                            <td>0.85</td>
+                                            <td>13118</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Macro Average</th>
+                                            <td>0.67</td>
+                                            <td>0.90</td>
+                                            <td>0.71</td>
+                                            <td>13118</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th scope="row">Weighted Average</th>
+                                            <td>0.94</td>
+                                            <td>0.85</td>
+                                            <td>0.88</td>
+                                            <td>13118</td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </p>
+                    </p>
+                    <h4 style="margin-left: 12%;">
+                        XGBoost Confusion Matrix
+                    </h4>
+                    <p>
+                        <p style="margin-left: 20%;">
+                            <div class="panel panel-default" style="width: 40%;margin-left: 10%;">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col"></th>
+                                            <th scope="col">not Plus - Model</th>
+                                            <th scope="col">Plus - Model</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">not Plus - Actual</th>
+                                            <td>10132 </td>
+                                            <td>1914</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Plus - Actual</th>
+                                            <td>41</td>
+                                            <td>1031</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </p>
+                    </p>
+                    <p>
+                        <p style="margin-left: 20%;">
+                            <div class="panel panel-default" style="width: 80%;margin-left: 10%;">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Logistic Regression</th>
+                                            <th scope="col">Percision</th>
+                                            <th scope="col">Recall</th>
+                                            <th scope="col">F1-Score</th>
+                                            <th scope="col">Support</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">not Plus</th>
+                                            <td>0.98</td>
+                                            <td>0.83</td>
+                                            <td>0.90</td>
+                                            <td>12046</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Plus</th>
+                                            <td>0.30</td>
+                                            <td>0.85</td>
+                                            <td>0.45</td>
+                                            <td>1072</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Accuracy</th>
+                                            <td></td>
+                                            <td></td>
+                                            <td>0.83</td>
+                                            <td>13118</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Macro Average</th>
+                                            <td>0.64</td>
+                                            <td>0.84</td>
+                                            <td>0.67</td>
+                                            <td>13118</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th scope="row">Weighted Average</th>
+                                            <td>0.93</td>
+                                            <td>0.83</td>
+                                            <td>0.86</td>
+                                            <td>13118</td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </p>
+                    </p>
+                    <h4 style="margin-left: 12%;">
+                        Logistic Regression Confusion Matrix
+                    </h4>
+                    <p>
+                        <p style="margin-left: 20%;">
+                            <div class="panel panel-default" style="width: 40%;margin-left: 10%;">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col"></th>
+                                            <th scope="col">not Plus - Model</th>
+                                            <th scope="col">Plus - Model</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">not Plus - Actual</th>
+                                            <td>9945</td>
+                                            <td>2101</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Plus - Actual</th>
+                                            <td>157</td>
+                                            <td>915</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </p>
+                    </p>
+                    <p style="margin-left: 3.25%;">
+                        Almost definitately, XGBoost outperforms Logistic Regression in every metric. Even in my own 
+                        metric, XGBoost outperformed Logistic 0.014 to 0.049 (Note, can't compare against undersampled 
+                        K-fold results because it was using a different data set, but can compare to first K-fold).
+                        Therefore, we will continue and apply it to our out of sample, San Fransico, dataset. All I will 
+                        be doing is applying the same fitted model to the dataset. This is the results I was able to 
+                        get:
+                    </p>
+                    <p>
+                        <p style="margin-left: 20%;">
+                            <div class="panel panel-default" style="width: 80%;margin-left: 10%;">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">San Fransico</th>
+                                            <th scope="col">Percision</th>
+                                            <th scope="col">Recall</th>
+                                            <th scope="col">F1-Score</th>
+                                            <th scope="col">Support</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">not Plus</th>
+                                            <td>0.97</td>
+                                            <td>0.87</td>
+                                            <td>0.92</td>
+                                            <td>2915</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Plus</th>
+                                            <td>0.32</td>
+                                            <td>0.69</td>
+                                            <td>0.44</td>
+                                            <td>253</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Accuracy</th>
+                                            <td></td>
+                                            <td></td>
+                                            <td>0.86</td>
+                                            <td>3168</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Macro Average</th>
+                                            <td>0.65</td>
+                                            <td>0.78</td>
+                                            <td>0.68</td>
+                                            <td>3168</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th scope="row">Weighted Average</th>
+                                            <td>0.92</td>
+                                            <td>0.86</td>
+                                            <td>0.88</td>
+                                            <td>3168</td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </p>
+                    </p>
+                    <h4 style="margin-left: 12%;">
+                        San Fransico XBGoost Confusion Matrix
+                    </h4>
+                    <p>
+                        <p style="margin-left: 20%;">
+                            <div class="panel panel-default" style="width: 40%;margin-left: 10%;">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col"></th>
+                                            <th scope="col">not Plus - Model</th>
+                                            <th scope="col">Plus - Model</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">not Plus - Actual</th>
+                                            <td>2548</td>
+                                            <td>367</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Plus - Actual</th>
+                                            <td>78</td>
+                                            <td>175</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </p>
+                    </p>
+                    <p style="margin-left: 3.25%;">
+                        Overall, I am very pleased with the results from the out of sample dataset. It performed just as 
+                        well as the XGBoost did on the Los Angeles dataset. This is indicative of the model not 
+                        overfitting to the Los Angeles data. To demonstrate how well my model did, proceed to the 
+                        <a href="/airbnb/demo">demo</a>!
                     </p>
                 </div>
             </div>
