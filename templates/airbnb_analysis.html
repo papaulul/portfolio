@@ -70,11 +70,11 @@
                         <h3 style="font-size: 25px;  margin-left:2%;">Methodology:</h3>
                         <p style="margin-left: 3.25%;">
                             <a href="https://scrapy.org/">Scrapy</a>
-                            is an open-source python package for scraping website data. The dataset for listings
-                            information was provided by <a href="http://insideairbnb.com/get-the-data.html">Inside
-                                Airbnb</a>. For the goal of this project, we need a column that will differentiate
-                            listings that are part of the "Plus" program. Unfortunately, that data is not provided
-                            therefore there is a need for scraping this information.
+                            is an open-source python package for scraping website data. <a
+                                href="http://insideairbnb.com/get-the-data.html">Inside Airbnb</a> provided the
+                            dataset for listings information. For the goal of this project, we need a column that
+                            will differentiate listings that are part of the "Plus" program. Unfortunately, the
+                            data is missing this variable; therefore, there is a need to scrape this information.
                             <br>
                             <br>
                         </p>
@@ -83,9 +83,10 @@
                         </h4>
                         <p style="margin-left: 3.25%;">
 
-                            Luckily, in the dataset, one of the columns contain the url where the information was
-                            orginally obtained. Using that, I was able to construct a spider that can visit each +40,000
-                            listings. The URL are formatted such that it is: airbnb.com/rooms/XXX where XXX is a number.
+                            Luckily, in the dataset, one of the columns contains the URL where the information was
+                            initially obtained. Using that, I was able to construct a spider that can visit every
+                            +40,000 listings. The URL is formatted such that it is: airbnb.com/rooms/XXX where
+                            XXX is a number.
                             To determine whether the listing is a Plus listing, we can compare how listing pages look.
                         </p>
                         <img src="{{url_for('static', filename='airbnb_ss1.png') }}" alt="airbnb"
@@ -96,9 +97,9 @@
                         <br>
                         <p style="margin-left: 3.25%;">
                             At the bottom, we see that the Plus listing has a badge (and overall looks nicer than the
-                            regular listing). We can use this fact to easily differentiate listings. By searching for
-                            whether the page contains that badge, we will be able to solve this problem. Although, this
-                            is a simple check for a spider to crawl, Airbnb limits the number of request you can make
+                            regular listing). We can use this fact to differentiate listings easily. By searching for
+                            whether the page contains that badge, we will be able to solve this problem. Although this
+                            is a simple check for a spider to crawl, Airbnb limits the number of requests you can make
                             every minute. With over 40,000 listings just for Los Angeles, a crawl will take around 18
                             hours. However, I will be able to find all listings that are Plus in my dataset.
                         </p>
@@ -106,7 +107,7 @@
                             Method 2:
                         </h4>
                         <p style="margin-left: 3.25%;">
-                            Instead of going through 40,000+ different listing, another way is to scrape the url of
+                            Instead of going through 40,000+ different listing, another way is to scrape the URL of
                             Plus listings specifically. Below, we see that Airbnb does segment this population for us:
                         </p>
                         <img src="{{url_for('static', filename='airbnb_ss3.png') }}" alt="airbnb"
@@ -117,7 +118,7 @@
                             spider to crawl through the pages multiple times, it seems that some listings randomly
                             filter in and out based on Airbnb's searching algorithm. This spider only takes about 20
                             minutes to run, and the results vary with those with the one in the dataset. By doing this
-                            way, we lose the key to join the dataset and Plus listings (url) as well.
+                            way, we lose the key to join the dataset and Plus listings (URL) as well.
                         </p>
                         <img src="{{url_for('static', filename='airbnb_ss4.png') }}" alt="airbnb"
                             class="img-rounded center-block" style="width:75%;">
@@ -149,19 +150,20 @@
                         We'll be looking at the Airbnb listings for Los Angeles and San Fransico based on data from
                         <a href="http://insideairbnb.com/get-the-data.html">Inside Airbnb</a>. The datasets originally
                         had <b>108</b> columns from the July 8th scrape. The Los Angeles data set contained
-                        <b>44,620</b> rows and San Fransico had <b>7,738</b> rows. With this large descrepincies between
+                        <b>44,620</b> rows, and San Fransico had <b>7,738</b> rows. With this large discrepancy between
                         listing population, we will be using Los Angeles as the Training set and San Fransico as the
                         Out of Sample Validation set.
                         <br><br>
-                        From these populations, Los Angeles has <b>1072</b> Plus listings and San Fransico has
+                        From these populations, Los Angeles has <b>1072</b> Plus listings, and San Fransico has
                         <b>253</b>
                         <br><br>
-                        Airbnb also have a program for Hosts called <b>Superhost</b>. By being a Superhost, you will
+                        Airbnb also has a program for Hosts called <b>Superhost</b>. By being a Superhost, you will
                         have a badge next all of your listings, which indicates that you are verified to be a good host
-                        in the eyes of Airbnb. To become a Superhost, you need to follow several criteria including:
+                        in the eyes of Airbnb. To become a Superhost, you need to follow several criteria:
                         maintaining a 4.8 rating or higher, less than 1% cancel rate, and more. These criteria, line up
                         with some of the requirements to have a Plus listing. One of my assumption going forward is that
-                        to be eligible to get a Plus listing, you would need to be a Superhost. This isn't necessarily
+                        to be eligible to get a Plus listing the host would need to be a Superhost. This isn't
+                        necessarily
                         completely true, due to the fact that you can lose your Superhost status even if your listing
                         was made into a Plus listing. Even with this fact, we can remove some noise by following my
                         assumption. By removing the listings that aren't Superhost or Plus, we are left with
@@ -188,14 +190,14 @@
                     <br>
                     <p style="margin-left: 3.25%;">
                         We see some outliers with listings above latitude 34.3 and below 33.5. When we replot it without
-                        those outliers, we see a much clearer picture
+                        those outliers, we see a much clearer picture.
                     </p>
                     <img src="{{url_for('static', filename='LA_500_2.png') }}" alt="airbnb"
                         class="img-rounded center-block" style="width:75%;">
                     <br>
                     <p style="margin-left: 3.25%;">
-                        I tried to do the same thing with the San Fransico data to see if there were any to remove,
-                        however it seemed everything was fine.
+                        I tried to do the same thing with the San Fransico data to see if there were any to remove.
+                        However, it seemed fine.
                     </p>
                     <img src="{{url_for('static', filename='SF_500.png') }}" alt="airbnb"
                         class="img-rounded center-block" style="width:75%;">
@@ -214,23 +216,25 @@
                         For a Plus listing, Airbnb expects all of their listings to contain certain essential amenities
                         for the guests. On their
                         <a href="https://www.airbnb.com/d/plushomechecklist">
-                            website</a> they mention things like: coffee, luggage rack, large mirror, and much more. The
+                            website</a>, they mention things like: coffee, luggage rack, large mirror, and much more.
+                        The
                         dataset provides us a list of all amenities that the listing contains, however, it does not
                         indicate which amenities they do not have. Another assumption has been made that all amenities
-                        listing in the table are those that are avaliable in the listing and any other are absent.
+                        listing in the table are those that are available in the listing and any other are absent.
                         <br><br>
-                        After looking through each listings from both locations, there were <b>241</b> unique amenities.
+                        After looking through each listing from both locations, there were <b>241</b> unique amenities.
                         However, there seem to be similar amenities such as "Sonos Sound System" and "Sound System".
                         Regardless of the granularity of the amenities, every unique amenity was turned into an
                         indicator column for each listing.
                         <br><br>
-                        If we were to just leave all 241 columns in the dataset, we would start overfitting and fall
+                        If we were just to leave all 241 columns in the dataset, we would start overfitting and fall
                         into the <b>Curse of Dimensionality</b>. I wanted to narrow down the amenities while not losing
-                        too much information. I decided to use a statistical method called <b>Jaccard Similarity
+                        too much information. I decided to use a statistical method called the <b>Jaccard Similarity
                             Coefficient</b> to determine the amenities that are the most similar with the Plus listing
-                        indicator. I can do this because all of the amenitiy columns are indicators as well.
+                        indicator. I can do this because all of the amenity columns are indicators as well.
                         <br><br>
-                        Jaccard Similarity Coefficient, also known as Jaccard Index, measures similarity between sets,
+                        Jaccard Similarity Coefficient, also known as Jaccard Index, measures the similarity between
+                        sets
                         and is defined as the size of the intersection divided by the size of the union of the sets.
                     </p>
                     <a href="https://en.wikipedia.org/wiki/Jaccard_index#Probability_Jaccard_similarity_and_distance">
@@ -239,7 +243,7 @@
                     </a>
                     <br>
                     <p style="margin-left: 3.25%;">
-                        From the visual above, we see the closer the staistic is to 1, the more similar they are. Once
+                        From the visual above, we see the closer the statistic is to 1, the more similar they are. Once
                         we ran all of the amenities and found the Index, some of the most similar amenities are (in
                         order):
                     </p>
@@ -282,10 +286,11 @@
                         Variable Reduction:
                     </h4>
                     <p style="margin-left: 3.25%;">
-                        To make sure, there are variables that won't hamper the model's production, I had to
-                        remove/reduce some variables from the table. Above I mentioned how I reduced the different
-                        indicators from the amenities features, I am looked at correlation between every variable. If
-                        there exists variables that are very correlated in the model, they can pose a risk of counting
+                        I had to remove/reduce some variables from the table to ensure that there won't exist variables
+                        to hamper the model's production. Above I mentioned how I reduced the different
+                        indicators from the amenities features, I am looked at the correlation between every variable.
+                        If
+                        there exist variables that are very correlated in the model, they can pose a risk of counting
                         double. Such as total reviews versus reviews per month, these variables would have somewhat
                         of a correlation since reviews per month is derived from total reviews from the listing. By
                         removing these variables, we would reduce the noise for our model.
@@ -305,7 +310,7 @@
                         class="img-rounded center-block" style="width:65%;">
                     <br>
                     <p style="margin-left: 3.25%;">
-                        The one disadvantage of using a log transformation is that when the value is 0, we get an NAN
+                        The one disadvantage of using a log transformation is that when the value is 0, we get a NAN
                         value. I had it so that if the original value is 0, it would not go through the transformation
                         and stay at 0.
 
@@ -329,11 +334,11 @@
                         class="img-rounded center-block" style="width:80%;">
                     <br>
                     <p style="margin-left: 3.25%;">
-                        As we see above, there seem to be NAN values on columns that deal with reviews consistantly.
+                        As we see above, there seem to be NAN values on columns that deal with reviews consistently.
                         This deals with the issue of not having any reviews for that listing. To deal with these
                         columns, I decided to apply linear regression to fit each review column. I would then plug in
                         the values from the columns from the missing reviews and try to predict the values. We also see
-                        columns like security deposit which is mainly NAN. We will remove columns like that.
+                        columns like security deposit, which is mainly NAN. We will remove columns like that.
                     </p>
                 </div>
             </div>
@@ -352,35 +357,37 @@
             <div id="collapseFour" class="collapse in" aria-labelledby="headingFour" data-parent="#accordionExample">
                 <div class="card-body">
                     <p style="margin-left: 3.25%;">
-                        After data preparations, the each table have <b>61</b> columns. Since the dataset isn't too big,
+                        After data preparations, each table has <b>61</b> columns. Since the dataset isn't too big,
                         everything will be ran locally. With this being a <b>supervised learning</b> problem,
                         traditional machine learning techniques could be used (specifically, a classification
-                        problem). I will look into four differnt models:
+                        problem). I will look into four different models:
                         <li style="margin-left: 5%;">Logistic Regression</li>
                         <li style="margin-left: 5%;">Bernoulli Naive Bayes</li>
                         <li style="margin-left: 5%;">Random Forest</li>
                         <li style="margin-left: 5%;">XGBoost</li>
                     </p>
                     <p style="margin-left: 3.25%;">
-                        Each model have different parameters to tune to ensure best performance. The forest type models,
+                        Each model has different parameters to tune to ensure the best performance. The forest type
+                        models,
                         Random Forest and XGBoost, have much more parameters to tune. Therefore, I used <b>Random
-                            Grid Search</b> to find the best parameters. This allows me to reduce compute time and
+                            Grid Search</b> to find the best parameters. This allows me to reduce the compute time and
                         expand the number of parameters to check.
 
                         <br><br>
 
                         After getting the best parameters, I needed to choose between the four models. To evaluate each
-                        model's perfomance, I looked into using <b>Stratified K-fold Method</b> with K=5. By keeping it
-                        stratified, each test and train splits will have the same percentage of Plus listings. Allowing
+                        model's performance, I looked into using <b>Stratified K-fold Method</b> with K=5. By keeping it
+                        stratified, each test and train splits will have the same percentage of Plus listings, which
+                        allows
                         each set to be representative of the rate of Plus listings.
 
                         <br><br>
 
                         Normally in a classification problem, we look at the accuracy of the model. However, the
                         dataset is unbalanced; so, if our model guessed every listing is not Plus, it will achieve a
-                        <b>92%</b> accuracy. This is would just incentiveize the model to have more False Negatives
+                        <b>92%</b> accuracy. This is would just incentivize the model to have more False Negatives
                         than False Positives. For this particular problem, <b>False Positives are not the worst things
-                            to have</b>. This would indicate these listings aren't actually Plus listings, but are
+                            to have</b>. This would indicate these listings aren't actually Plus listings but are
                         similar
                         enough to the Plus listings.
 
@@ -432,7 +439,7 @@
                         </p>
                     </p>
                     <p style="margin-left: 3.25%;">
-                        Looking at these values, we see that the Bernoulli Naive Bayes by far beat the other models.
+                        Looking at these values, we see that the Bernoulli Naive Bayes by far beats the other models.
                         The other models had more False Negatives that I decided to investigate ways to deal with
                         class imbalance.
                     </p>
@@ -487,7 +494,7 @@
                     </p>
                     <p style="margin-left: 3.25%;">
                         We see above, that the Random Forest Model performed the best. Bernoulli actually got worse from
-                        the previous method which seems odd. However, despite Random Forest's performance on my metric,
+                        the previous method, which seems odd. However, despite Random Forest's performance on my metric,
                         I decided to move on with Logistic and XGBoost for further analysis. This is because the
                         computational cost/time to run the Random Forest did not justify the boost of performance
                         between it and the other two models.
@@ -496,10 +503,10 @@
                         Analysis:
                     </h4>
                     <p style="margin-left: 3.25%;">
-                        I wanted to go deeper in how well model would perform on things like the full dataset while
+                        I wanted to go deeper in how well the models would perform on the full dataset while
                         being trained on the undersample set. I didn't want to choose outright from the K-fold method
                         because Logistic had a run with the better performance (the minimum in the metric), but XGBoost
-                        consistently does better. So, I got reports on how well each perform holistically:
+                        consistently does better. So, I got reports on how well each performs holistically:
                     </p>
                     <p>
                         <p style="margin-left: 20%;">
@@ -674,11 +681,11 @@
                         </p>
                     </p>
                     <p style="margin-left: 3.25%;">
-                        Almost definitately, XGBoost outperforms Logistic Regression in every metric. Even in my own 
-                        metric, XGBoost outperformed Logistic 0.014 to 0.049 (Note, can't compare against undersampled 
+                        Almost definitely, XGBoost outperforms Logistic Regression in every metric. Even in my own
+                        metric, XGBoost outperformed Logistic 0.014 to 0.049 (Note, can't compare against undersampled
                         K-fold results because it was using a different data set, but can compare to first K-fold).
-                        Therefore, we will continue and apply it to our out of sample, San Fransico, dataset. All I will 
-                        be doing is applying the same fitted model to the dataset. This is the results I was able to 
+                        Therefore, we will continue and apply it to our out of sample, San Fransico, dataset. All I will
+                        be doing is applying the same fitted model to the dataset. This is the results I was able to
                         get:
                     </p>
                     <p>
@@ -768,9 +775,9 @@
                         </p>
                     </p>
                     <p style="margin-left: 3.25%;">
-                        Overall, I am very pleased with the results from the out of sample dataset. It performed just as 
-                        well as the XGBoost did on the Los Angeles dataset. This is indicative of the model not 
-                        overfitting to the Los Angeles data. To demonstrate how well my model did, proceed to the 
+                        Overall, I am very pleased with the results from the out of sample dataset. It performed just as
+                        well as the XGBoost did on the Los Angeles dataset. This is indicative of the model not
+                        overfitting to the Los Angeles data. To demonstrate how well my model did, proceed to the
                         <a href="/airbnb/demo">demo</a>!
                     </p>
                 </div>
