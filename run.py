@@ -10,7 +10,7 @@ import pickle
 
 
 app = Flask(__name__)
-app.secret_key = '1234'
+app.secret_key = os.environ.get("SECRET_KEY") 
 bootstrap = Bootstrap(app)
 moment= Moment()
 
