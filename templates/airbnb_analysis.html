@@ -344,7 +344,7 @@
             </div>
         </div>
         <hr style="border-color: #bfbfbf ; ">
-        <div class="card">
+        <div class="card" style="min-height: 2000px">
             <div class="card-header" id="headingFour">
                 <h5 class="mb-0">
                     <button class="btn btn-link collapsed hover" type="button" data-toggle="collapse"
@@ -774,11 +774,26 @@
                             </div>
                         </p>
                     </p>
-                    <p style="margin-left: 3.25%;">
-                        Overall, I am very pleased with the results from the out of sample dataset. It performed just as
-                        well as the XGBoost did on the Los Angeles dataset. This is indicative of the model not
-                        overfitting to the Los Angeles data. To demonstrate how well my model did, proceed to the
-                        <a href="/airbnb/demo">demo</a>!
+                    <div class="row" style="min-height: 20vh">
+                        <div class="col-md-9">
+                            <p style="margin-left: 3.25%;">
+                                Overall, I am very pleased with the results from the out of sample dataset. It performed
+                                just as
+                                well as the XGBoost did on the Los Angeles dataset. This is indicative of the model not
+                                overfitting to the Los Angeles data. To demonstrate how well my model did, proceed to
+                                the
+                                <a href="/airbnb/demo">demo</a>!
+                        </div>
+                        <div class="col-md-3">
+                            <a href="https://github.com/papaulul/Sprint_Project_Airbnb">
+                                
+                                <img src="{{url_for('static', filename='github.png')}}" class="img-rounded"
+                                    style="padding:0 10px; float: left" value="Github">
+                            </a>
+
+                        </div>
+
+                    </div>
                     </p>
                 </div>
             </div>

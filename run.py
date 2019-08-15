@@ -5,11 +5,12 @@ from config import config
 from flask_moment import Moment
 from datetime import datetime 
 import pandas as pd 
+import numpy as np
 import pickle
 
 
 app = Flask(__name__)
-
+app.secret_key = '1234'
 bootstrap = Bootstrap(app)
 moment= Moment()
 
@@ -31,8 +32,65 @@ def airbnb_analysis():
 
 @app.route('/airbnb/demo')
 def airbnb_demo():
-    return render_template('airbnb_about.html')
+    # Dataframe setup
+    df = pd.read_csv("static/Airbnb/demo.csv",index_col=0)
+    num_of_Plus = np.random.randint(1,5)
+    demo_index_non_plus = np.random.choice(df[df['isPlus']==False].index,5-num_of_Plus,replace=False)
+    demo_index_plus = np.random.choice(df[df['isPlus']==True].index,num_of_Plus,replace=False)
+    session["index"] = list(map(lambda x: int(x),sorted(np.concatenate([demo_index_non_plus,demo_index_plus]))))
+    index = list(map(lambda x: int(x),sorted(np.concatenate([demo_index_non_plus,demo_index_plus]))))
+    df['amenities'] = df['amenities'].apply(lambda x: str(x)[1:-1])
+    df = df.loc[sorted(np.concatenate([demo_index_non_plus,demo_index_plus]))]
+    df['answers'] = df['isPlus'] == df['Plus_pred']
+        
+    # Variables 
+    model_answer = df['answers'].to_list()
+    reveal = [False for _ in range(5)]
+    right_wrong = [False for _ in range(5)]
+    session["reveal"] = reveal
+    session["num_right"] = right_wrong
+    df = df.to_dict()
 
+    return render_template('airbnb_demo.html', data = df, index = index, reveal = reveal, right_wrong = right_wrong,
+                            model_answer = model_answer)
+
+@app.route('/airbnb/demo1', methods=["POST"])
+def airbnb_process():
+    # Dataframe Setup
+    df = pd.read_csv("static/Airbnb/demo.csv",index_col=0)
+    index = session.get("index",None)
+    df['amenities'] = df['amenities'].apply(lambda x: str(x)[1:-1])
+    df = df.loc[index]
+    df['answers'] = df['isPlus'] == df['Plus_pred']
+    # Variables
+    model_answer = df['answers'].to_list()
+    reveal = session.get("reveal",None)
+    right_wrong = session.get("num_right",None)
+    for answers in range(5):
+        try: 
+            if request.form['submit_button_'+str(answers)] == "Plus Listing" or request.form['submit_button_'+str(answers)] == "Not Plus Listing":
+                reveal[answers] = True
+                try:
+                    if df['isPlus'].loc[index[answers]] and request.form['submit_button_'+str(answers)] == "Plus Listing": 
+                        right_wrong[answers] = True
+                    elif df['isPlus'].loc[index[answers]] == False and request.form['submit_button_'+str(answers)] == "Not Plus Listing":
+                        right_wrong[answers] = True
+                except: 
+                    pass
+        except: 
+                pass
+    try:
+        if request.form['show'] == 'show':
+            reveal = [True for _ in range(5)]
+    except:
+        pass
+
+    # Setting final variables
+    df = df.to_dict()
+    session['num_right'] = right_wrong
+    session["reveal"] = reveal
+    return render_template('airbnb_demo.html', data = df, index = index, reveal = reveal, right_wrong = right_wrong,
+        model_answer = model_answer)
 @app.route('/tripadvisor')
 def tripadvisor():
     return render_template('tripadvisor_about.html')
@@ -47,7 +105,9 @@ def tripadvisor_analysis():
 
 @app.route('/tripadvisor/demo')
 def tripadvisor_demo():
-    amenities =  ['Banquet Room', 'Bar/Lounge', 'Breakfast Available','Breakfast included','Conference Facilities', 'Family Rooms', 'Free parking', 'Microwave', 'Outdoor pool', 'Pets Allowed ( Dog / Pet Friendly )', 'Pool', 'Public Wifi','Refrigerator in room', 'Restaurant', 'Room service', 'Self-Serve Laundry']
+    amenities =  ['Banquet Room', 'Bar/Lounge', 'Breakfast Available','Breakfast included','Conference Facilities', 
+    'Family Rooms', 'Free parking', 'Microwave', 'Outdoor pool', 'Pets Allowed ( Dog / Pet Friendly )', 'Pool', 
+    'Public Wifi','Refrigerator in room', 'Restaurant', 'Room service', 'Self-Serve Laundry']
     return render_template('tripadvisor_demo.html', amenities = amenities, results={})
 
 @app.route('/tripadvisor/demo1', methods=["POST"])
@@ -60,9 +120,21 @@ def tripadvisor_process():
         hotel_info = pd.read_pickle('static/files/hotel_info.pkl')
         hotel = pickle.load(open('static/files/hotel.sav','rb'))
         ss = pickle.load(open('static/files/quant_scaled.sav','rb'))
-        amenities =  ['Banquet Room', 'Bar/Lounge', 'Breakfast Available','Breakfast included','Conference Facilities', 'Family Rooms', 'Free parking', 'Microwave', 'Outdoor pool', 'Pets Allowed ( Dog / Pet Friendly )', 'Pool', 'Public Wifi','Refrigerator in room', 'Restaurant', 'Room service', 'Self-Serve Laundry']
 
-        amenities_all =  ['Accessible rooms','Air conditioning', 'Airport transportation', 'Babysitting','Banquet Room', 'Bar/Lounge', 'Breakfast Available','Breakfast included', 'Business Center with Internet Access','Children Activities (Kid / Family Friendly)', 'Concierge','Conference Facilities', 'Dry Cleaning','Electric vehicle charging station', 'Family Rooms','Fitness Center with Gym / Workout Room','Free High Speed Internet (WiFi)', 'Free Internet', 'Free parking','Golf course', 'Heated pool', 'Hot Tub', 'Indoor pool', 'Kitchenette','Laundry Service', 'Meeting rooms', 'Microwave', 'Minibar','Multilingual Staff', 'Non-smoking hotel', 'Non-smoking rooms','Outdoor pool', 'Paid Internet', 'Paid Wifi','Pets Allowed ( Dog / Pet Friendly )', 'Pool', 'Public Wifi','Refrigerator in room', 'Restaurant', 'Room service', 'Sauna','Self-Serve Laundry', 'Shuttle Bus Service', 'Smoking rooms available','Spa', 'Suites', 'Tennis Court', 'Wheelchair access']
+        amenities =  ['Banquet Room', 'Bar/Lounge', 'Breakfast Available','Breakfast included','Conference Facilities',
+         'Family Rooms', 'Free parking', 'Microwave', 'Outdoor pool', 'Pets Allowed ( Dog / Pet Friendly )', 'Pool',
+          'Public Wifi','Refrigerator in room', 'Restaurant', 'Room service', 'Self-Serve Laundry']
+
+        amenities_all =  ['Accessible rooms','Air conditioning', 'Airport transportation', 'Babysitting','Banquet Room',
+         'Bar/Lounge', 'Breakfast Available','Breakfast included', 'Business Center with Internet Access',
+         'Children Activities (Kid / Family Friendly)', 'Concierge','Conference Facilities', 'Dry Cleaning',
+         'Electric vehicle charging station', 'Family Rooms','Fitness Center with Gym / Workout Room',
+         'Free High Speed Internet (WiFi)', 'Free Internet', 'Free parking','Golf course', 'Heated pool', 
+         'Hot Tub', 'Indoor pool', 'Kitchenette','Laundry Service', 'Meeting rooms', 'Microwave', 'Minibar',
+         'Multilingual Staff', 'Non-smoking hotel', 'Non-smoking rooms','Outdoor pool', 'Paid Internet', 'Paid Wifi',
+         'Pets Allowed ( Dog / Pet Friendly )', 'Pool', 'Public Wifi','Refrigerator in room', 'Restaurant', 
+         'Room service', 'Sauna','Self-Serve Laundry', 'Shuttle Bus Service', 'Smoking rooms available','Spa', 
+         'Suites', 'Tennis Court', 'Wheelchair access']
         # Read inputs
         demo = {}
         for amen in amenities_all:

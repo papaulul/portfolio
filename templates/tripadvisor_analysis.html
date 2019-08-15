@@ -363,29 +363,46 @@
                         <br><br>
                         I followed a methodology close to the Hotel Cluster to achieve our goal. However, since I'm
                         now dealing with words and not model we cannot just model that. Instead we need to convert these
-                        words into some numeric values. I employed using Term Frequency-Inverse Document Frequency 
-                        (Tf-IDF). Tf-IDF is a statistical tool that allows to learn the importance of a word is to a 
-                        document in the corpus. Essentially, by looking at the frequency in the word vs the inverse of 
-                        the frequency of the type of document from the population of all of our reviews. Therefore to 
+                        words into some numeric values. I employed using Term Frequency-Inverse Document Frequency
+                        (Tf-IDF). Tf-IDF is a statistical tool that allows to learn the importance of a word is to a
+                        document in the corpus. Essentially, by looking at the frequency in the word vs the inverse of
+                        the frequency of the type of document from the population of all of our reviews. Therefore to
                         think about this, every review I scraped would be the corpus, each review would be the document,
-                        and words in said review would be the words. This method would allow us to rank the words based 
-                        on prevalance within the documents. Thus changing our words into meaningful numbers that we can 
+                        and words in said review would be the words. This method would allow us to rank the words based
+                        on prevalance within the documents. Thus changing our words into meaningful numbers that we can
                         use to cluster.
                         <br><br>
-                        Now we look for our elbow curve once again. 
+                        Now we look for our elbow curve once again.
                     </p>
                     <img src="{{url_for('static', filename='silhouette.png') }}" alt="tripadvisor"
-                    class="img-rounded center-block" style="width:50%;">
+                        class="img-rounded center-block" style="width:50%;">
+                    <div class="row" style="min-height: 20vh">
+                        <div class="col-md-9">
 
-                    <p style="margin-left: 3.25%;">
-                        We can see that the elbow is much more clearer than our previous one. It is at around 200, so 
-                        we will proceed with that number. We again save the model, and run it on each review. We assign
-                        them to a cluster from 0 to 199 write it on the table. 
+                            <p style="margin-left: 3.25%;">
+                                We can see that the elbow is much more clearer than our previous one. It is at around
+                                200, so
+                                we will proceed with that number. We again save the model, and run it on each review. We
+                                assign
+                                them to a cluster from 0 to 199 write it on the table.
 
-                        <br><br>
-                        To demonstrate how this works in application, proceed to the <a
-                        href="/tripadvisor/demo">demo</a>!
+                                <br><br>
+
+                                To demonstrate how this works in application, proceed to the <a
+                                    href="/tripadvisor/demo">demo</a>!
+                        </div>
+                        <div class="col-md-3">
+                            
+                            <a href="https://github.com/papaulul/HotelReviews">
+                                
+                                <img src="{{url_for('static', filename='github.png')}}" class="img-rounded"
+                                    style="padding:0 10px; float: left" value="Github">
+                                    <br> 
+                            </a>
+                        </div>
+                    </div>
                     </p>
+
                 </div>
             </div>
         </div>

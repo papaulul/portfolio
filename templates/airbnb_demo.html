@@ -1,0 +1,128 @@
+{% extends "airbnb.html" %}
+{% block tab %}
+<h2 class="center-here text-center">
+    Plus or not Plus? Beat the Artificial Intelligence!
+</h2>
+<p>
+    Below are 5 random listings randomly selected from San Fransico and Los Angeles. Try to predict which listings are
+    Plus and not Plus based on the listing information. And try to outperform my model!
+</p>
+<div class="container.fluid" style="min-height: 1600px; overflow:auto;">
+    <div class="row">
+        <div class="col-md-9">
+            {% if reveal[0] and reveal[1] and reveal[2] and reveal[3] and reveal[4] %}
+            <h4 class="center-here text-center">
+                You: {{right_wrong|sum}}/5 correct
+                <br>
+                AI: {{model_answer|sum}}/5 correct
+                <br>
+                {% if right_wrong|sum >= model_answer|sum %}
+                You Win!!!
+                {% else %}
+                AI wins
+                {%endif %}
+            </h4>
+            {% endif %}
+        </div>
+        <div class="col-md-3">
+            <div class="container.fluid"> 
+                <form method="POST" action="demo1">
+                    <button type="submit" name="show" value="show" class="btn btn-info center-here">Show All</button>
+                    <a href="/airbnb/demo" class='btn btn-primary' role="button">New Game</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br>
+    <form method="POST" action="demo1">
+        {% for row in range(5) %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Listing #{{row + 1}}</h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-9">
+                    <li>
+                        <b>Price</b>: ${{'%0.2f'|format(data['price'][index[row]]|float)}}, <b>Security Deposit</b>:
+                        ${{'%0.2f'|format(data['security_deposit'][index[row]]|float)}}, <b>Cleaning
+                            Fee</b>: ${{'%0.2f'|format(data['cleaning_fee'][index[row]]|float)}}, <b>Extra People
+                            fee</b>:
+                        ${{'%0.2f'|format(data['extra_people'][index[row]]|float)}}
+                    </li>
+                    <li>
+                        <b>Bedrooms</b>: {{data['bedrooms'][index[row]]|int}}, <b>Bathrooms:</b>
+                        {{data['bathrooms'][index[row]]|int}}, <b>Capacity</b>: {{data['accommodates'][index[row]]|int}}
+                        {% if data['accommodates'][index[row]]|int == 1%} person {% else %} people {% endif %} and
+                        {{data['guests_included'][index[row]]|int}}
+                        {% if data['guests_included'][index[row]]|int > 1%}guests{% else %}guest{%endif %}
+                    </li>
+                    <li>
+                        <b>Rating</b>: {{data['review_scores_rating'][index[row]]|int}}/100, <b>Distance to Center</b>:
+                        {{'%0.2f'|format(data['dist'][index[row]]|float)}} miles
+                    </li>
+                    <li>
+                        {% if data['host_listings_count'][index[row]]|int > 1 %}
+                        <b>Number of Other Listings from Host</b>: {{data['host_listings_count'][index[row]]|int}},
+                        {% endif %}
+                        <b>Host Response Rate</b>:{% if data['host_response_rate'][index[row]]|int < 0 %} 0 {% else %}
+                        {{data['host_response_rate'][index[row]]|int}}{%endif %}%
+                    </li>
+                    <li>
+                        <b>Minimum Nights</b>: {{data['minimum_nights'][index[row]]|int}} nights,
+                        <b>Maximum Nights</b>: {{data['maximum_nights'][index[row]]|int}} nights
+                    </li>
+                    <li>
+                        <b>Avaliability (next 30 days)</b>: {{data['availability_30'][index[row]]|int}} days,
+                        <b>Avaliability (next year)</b>: {{data['availability_365'][index[row]]|int}} days,
+                        <b>Calendar Last updated</b>: {{data['calendar_updated'][index[row]]|int}} days
+                    </li>
+                    <li>
+                        <b>Amenities</b>: {% for amen in data['amenities'][index[row]].split(",")[:-1] %}
+                        {{amen.strip()[1:-1]}},
+                        {%endfor %}
+                        {{data['amenities'][index[row]].split(",")[-1].strip()[1:-1]}}
+                    </li>
+
+                </div>
+                <div class="col-md-3">
+                    {% if reveal[row] %}
+                    <b>
+                        {% if right_wrong[row] %}
+                        Correct!
+                        {% else %}
+                        Incorrect :(
+                        {%endif %}
+                    </b>
+                    <br>
+                    {% else %}
+                    <div class="btn-group">
+                        <input type="submit" name="{{'submit_button_'+row|string }}" value="Plus Listing"
+                            class="btn btn-default"></button>
+                        <input type="submit" name="{{'submit_button_'+row|string }}" value="Not Plus Listing"
+                            class="btn btn-default"></button>
+                    </div>
+
+                    {%endif %}
+
+                    {% if reveal[row] %}
+                    Acutal:
+                    {% if data['isPlus'][index[row]] %}
+                    <b>Plus!</b>
+                    {% else %}
+                    <b>Not Plus!</b>
+                    {% endif %}
+                    <br>
+                    Model predicted:
+                    {% if data['Plus_pred'][index[row]] %} <b>Plus</b>{% else %}<b>Not Plus!</b>{% endif %}
+                    <br>
+                    {{'%0.2f'|format(data['Plus_prob'][index[row]]*100|float)}}% sure that this is
+                    {% if not(data['Plus_pred'][index[row]]) %} not {% endif %}a Plus Listing
+                    {%endif %}
+                </div>
+            </div>
+        </div>
+        {%endfor %}
+    </form>
+</div>
+
+{% endblock %}
