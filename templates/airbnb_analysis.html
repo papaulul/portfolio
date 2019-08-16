@@ -62,7 +62,7 @@
                         <h3 style="font-size: 25px ; margin-left:2%;">Goals:</h3>
                         <p style="margin-left: 3.25%;">
                             <b>1)</b> Find which listings are Plus listings <br>
-                            <b>2)</b> Retrieve thumbnail images from each listing.
+                            <b>2)</b> Retrieve thumbnail images from each listing
                         </p>
                     </p>
 
@@ -85,7 +85,7 @@
 
                             Luckily, in the dataset, one of the columns contains the URL where the information was
                             initially obtained. Using that, I was able to construct a spider that can visit every
-                            +40,000 listings. The URL is formatted such that it is: airbnb.com/rooms/XXX where
+                            40,000+ listings. The URL is formatted such that it is: airbnb.com/rooms/XXX where
                             XXX is a number.
                             To determine whether the listing is a Plus listing, we can compare how listing pages look.
                         </p>
@@ -154,8 +154,8 @@
                         listing population, we will be using Los Angeles as the Training set and San Fransico as the
                         Out of Sample Validation set.
                         <br><br>
-                        From these populations, Los Angeles has <b>1072</b> Plus listings, and San Fransico has
-                        <b>253</b>
+                        From these populations, Los Angeles has <b>1,072</b> Plus listings, and San Fransico has
+                        <b>253</b>.
                         <br><br>
                         Airbnb also has a program for Hosts called <b>Superhost</b>. By being a Superhost, you will
                         have a badge next all of your listings, which indicates that you are verified to be a good host
@@ -288,7 +288,7 @@
                     <p style="margin-left: 3.25%;">
                         I had to remove/reduce some variables from the table to ensure that there won't exist variables
                         to hamper the model's production. Above I mentioned how I reduced the different
-                        indicators from the amenities features, I am looked at the correlation between every variable.
+                        indicators from the amenities features, I also looked at the correlation between every variable.
                         If
                         there exist variables that are very correlated in the model, they can pose a risk of counting
                         double. Such as total reviews versus reviews per month, these variables would have somewhat
