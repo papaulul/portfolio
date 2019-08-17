@@ -179,7 +179,16 @@ def tripadvisor_process():
             results['No Hotels Exist'] = ["$0","$0",'/tripadvisor/demo']
         else:
             # Calculations  
-            df_quant_cols = ['num_amenities', 'num_rooms', 'hotel_rating_hotel', 'Accessible rooms','Air conditioning', 'Airport transportation', 'Babysitting','Banquet Room', 'Bar/Lounge', 'Breakfast Available','Breakfast included', 'Business Center with Internet Access','Children Activities (Kid / Family Friendly)', 'Concierge','Conference Facilities', 'Dry Cleaning','Electric vehicle charging station', 'Family Rooms','Fitness Center with Gym / Workout Room','Free High Speed Internet (WiFi)', 'Free Internet', 'Free parking','Golf course', 'Heated pool', 'Hot Tub', 'Indoor pool', 'Kitchenette','Laundry Service', 'Meeting rooms', 'Microwave', 'Minibar','Multilingual Staff', 'Non-smoking hotel', 'Non-smoking rooms','Outdoor pool', 'Paid Internet', 'Paid Wifi','Pets Allowed ( Dog / Pet Friendly )', 'Pool', 'Public Wifi','Refrigerator in room', 'Restaurant', 'Room service', 'Sauna','Self-Serve Laundry', 'Shuttle Bus Service', 'Smoking rooms available','Spa', 'Suites', 'Tennis Court', 'Wheelchair access']
+            df_quant_cols = ['num_amenities', 'num_rooms', 'hotel_rating_hotel', 'Accessible rooms','Air conditioning', 
+            'Airport transportation', 'Babysitting','Banquet Room', 'Bar/Lounge', 'Breakfast Available',
+            'Breakfast included', 'Business Center with Internet Access','Children Activities (Kid / Family Friendly)',
+             'Concierge','Conference Facilities', 'Dry Cleaning','Electric vehicle charging station', 'Family Rooms',
+             'Fitness Center with Gym / Workout Room','Free High Speed Internet (WiFi)', 'Free Internet', 
+             'Free parking','Golf course', 'Heated pool', 'Hot Tub', 'Indoor pool', 'Kitchenette','Laundry Service', 
+             'Meeting rooms', 'Microwave', 'Minibar','Multilingual Staff', 'Non-smoking hotel', 'Non-smoking rooms',
+             'Outdoor pool', 'Paid Internet', 'Paid Wifi','Pets Allowed ( Dog / Pet Friendly )', 'Pool', 'Public Wifi',
+             'Refrigerator in room', 'Restaurant', 'Room service', 'Sauna','Self-Serve Laundry', 'Shuttle Bus Service',
+              'Smoking rooms available','Spa', 'Suites', 'Tennis Court', 'Wheelchair access']
             to_pred = pd.DataFrame.from_dict(demo, orient= 'index').transpose()[df_quant_cols]
             to_pred = pd.DataFrame(ss.transform(to_pred),index = to_pred.index, columns = to_pred.columns)
             hotel_predict = hotel.predict(to_pred)[0]
