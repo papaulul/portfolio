@@ -91,6 +91,7 @@ def airbnb_process():
     session["reveal"] = reveal
     return render_template('airbnb_demo.html', data = df, index = index, reveal = reveal, right_wrong = right_wrong,
         model_answer = model_answer)
+        
 @app.route('/tripadvisor')
 def tripadvisor():
     return render_template('tripadvisor_about.html')
