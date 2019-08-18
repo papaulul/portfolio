@@ -10,7 +10,10 @@ import pickle
 
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("SECRET_KEY") or os.environ["SECRET_KEY"]
+try: 
+    app.secret_key = os.environ.get("SECRET_KEY") or os.environ["SECRET_KEY"]
+except: 
+    app.config['SECRET_KEY'] = os.urandom(12)
 bootstrap = Bootstrap(app)
 moment= Moment()
 
