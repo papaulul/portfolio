@@ -1,25 +1,24 @@
 {% extends "base.html" %}
 
 {% block page_content %}
-<div style='height: 100vh; overflow-y: scroll;'>
+<div class="pre-scrollable" style='height: 100vh; overflow-y: scroll;'>
     <div class="jumbotron" style="background-image:url(../static/airbnb_2.jpg); background-size: cover; height: 400px">
         <img src="{{url_for('static', filename='airbnb3.png') }}" alt="airbnb" class="img-rounded center-block"
             style="width: 400px; height: auto; margin-top: 5%">
         <br>
         <div class="center-here text-center">
-            <a href="/airbnb/about" role="button" class='btn btn-primary btn-lg ' style ="width:30%;  max-width: 250px;">
+            <a href="/airbnb/about" role="button" class='btn btn-primary btn-lg ' style="width:30%;  max-width: 250px;">
                 About
             </a>
-            <a href="/airbnb/analysis" role="button" class='btn btn-success btn-lg' style ="width:30%;  max-width: 250px;">
+            <a href="/airbnb/analysis" role="button" class='btn btn-success btn-lg'
+                style="width:30%;  max-width: 250px;">
                 Analysis
             </a>
-            <a href="/airbnb/demo" role="button" class='btn btn-info btn-lg ' style ="width:30%;  max-width: 250px;">
+            <a href="/airbnb/demo" role="button" class='btn btn-info btn-lg ' style="width:30%;  max-width: 250px;">
                 Demo
             </a>
         </div>
     </div>
-    <div class="content" style="margin-left: 10%; margin-right: 10%;   font-size: 15px; height: 110vh;">
-        {% block tab %}{% endblock %}
-    </div>
+    {% block tab %}{% endblock %}
 </div>
 {% endblock %}
