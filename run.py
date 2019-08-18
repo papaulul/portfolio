@@ -10,7 +10,7 @@ import pickle
 
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("SECRET_KEY") 
+app.secret_key = os.environ.get("SECRET_KEY") or os.environ["SECRET_KEY"]
 bootstrap = Bootstrap(app)
 moment= Moment()
 
@@ -91,7 +91,7 @@ def airbnb_process():
     session["reveal"] = reveal
     return render_template('airbnb_demo.html', data = df, index = index, reveal = reveal, right_wrong = right_wrong,
         model_answer = model_answer)
-        
+
 @app.route('/tripadvisor')
 def tripadvisor():
     return render_template('tripadvisor_about.html')
