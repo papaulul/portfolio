@@ -1,416 +1,458 @@
 {% extends "tripadvisor.html" %}
 
 {% block tab %}
-<div class="container.fluid">
-    <h1>Table of Contents</h1>
-    <div class="text-center">
-        <ul class="list-group" style="margin-left: 5%; width: 300px; font-size:  24px">
-            <li class="list-group-item"> <a href="#headingOne">Tools</a>
-            </li>
-            <li class="list-group-item"> <a href="#headingTwo">Scrape</a>
-            </li>
-            <li class="list-group-item"> <a href="#headingThree">Exploratory Data Analysis</a>
-            </li>
-            <li class="list-group-item"> <a href="#headingFour">Modeling</a>
-            </li>
-        </ul>
-    </div>
+<div class="content" style="margin-left: 10%; margin-right: 10%; font-size: 15px; height: 100vh;">
 
-    <div class="accordion" id="accordionExample">
+    <div class="container.fluid">
+        <h1>Table of Contents</h1>
+        <div class="text-center">
+            <ul class="list-group" style="margin-left: 5%; width: 300px; font-size:  24px">
+                <li class="list-group-item"> <a href="#headingOne">Tools</a>
+                </li>
+                <li class="list-group-item"> <a href="#headingTwo">Scrape</a>
+                </li>
+                <li class="list-group-item"> <a href="#headingThree">Exploratory Data Analysis</a>
+                </li>
+                <li class="list-group-item"> <a href="#headingFour">Modeling</a>
+                </li>
+            </ul>
+        </div>
 
-        <div class="card">
-            <div class="card-header" id="headingOne">
-                <h2 class="mb-0">
-                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
-                        aria-expanded="true" aria-controls="collapseOne" style="font-size: 40px; color:black;">
-                        Tools
-                    </button>
-                </h2>
-            </div>
-            <div id="collapseOne" class="collapse in" aria-labelledby="headingOne" data-parent="#accordionExample">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="text-center">
-                            <ul class="list-group" style="margin-left: 5%; width: 200px;">
-                                <li class="list-group-item">Python 3</li>
-                                <li class="list-group-item">Scrapy</li>
-                                <li class="list-group-item">MongoDB</li>
-                                <li class="list-group-item">PyMongo</li>
-                                <li class="list-group-item">Scikit-Learn</li>
-                                <li class="list-group-item">Matplot-lib</li>
-                                <li class="list-group-item">Seaborn</li>
-                                <li class="list-group-item">NLTK</li>
-                            </ul>
+        <div class="accordion" id="accordionExample">
+
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+                            aria-expanded="true" aria-controls="collapseOne" style="font-size: 40px; color:black;">
+                            Tools
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseOne" class="collapse in" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="text-center">
+                                <ul class="list-group" style="margin-left: 5%; width: 150px; min-width:20%">
+                                    <li class="list-group-item">Python 3</li>
+                                    <li class="list-group-item">Scrapy</li>
+                                    <li class="list-group-item">MongoDB</li>
+                                    <li class="list-group-item">PyMongo</li>
+                                    <li class="list-group-item">Scikit-Learn</li>
+                                    <li class="list-group-item">Matplot-lib</li>
+                                    <li class="list-group-item">Seaborn</li>
+                                    <li class="list-group-item">NLTK</li>
+                                </ul>
+                            </div>
+
                         </div>
-
                     </div>
                 </div>
             </div>
-        </div>
-        <hr style="border-color: #bfbfbf ; ">
+            <hr style="border-color: #bfbfbf ; ">
 
-        <div class="card">
-            <div class="card-header" id="headingTwo">
-                <h5 class="mb-0">
-                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
-                        data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"
-                        style="font-size: 40px; color:black;">
-                        Scraping
-                    </button>
-                </h5>
-            </div>
-            <div id="collapseTwo" class="collapse in" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                <div class="card-body">
-                    <p>
-                        <h3 style="font-size: 25px ; margin-left:2%;">Goals:</h3>
-                        <p style="margin-left: 3.25%;">
-                            <b>1)</b> Get information about hotels <br>
-                            <b>2)</b> Get information about reviews and the review itself
-                        </p>
-                    </p>
-
-                    <p>
-                        <h3 style="font-size: 25px;  margin-left:2%;">Methodology:</h3>
-                        <p style="margin-left: 3.25%;">
-                            <a href="https://scrapy.org/">Scrapy</a>
-
-                            is an open-source python package for scraping website data. For this project, I will be
-                            using it to scrape
-                            information from the TripAdvisor's website. I'll be looking how to get all general
-                            information about the
-                            hotels, along with all reviews associated with each hotels.
-                            <br>
-                            <br>
-                            The first thing we'll need to do is look at the website that we're scraping from. I decided
-                            to use this
-                            following website:
-
-                            <a href="https://www.tripadvisor.com/Hotels-g60898-Atlanta_Georgia-Hotels.html">Link</a>.
-                            Below you'll see a screen shot of what the site will look like. It displays all 223
-                            hotels/properties that
-                            TripAdvisor have information on in the city of Atlanta.
-                        </p>
-                        <img src="{{url_for('static', filename='tripadvisor_ss1.png') }}" alt="tripadvisor"
-                            class="img-rounded center-block" style="width:75%;">
-                        <p style="margin-left: 3.25%;">
-
-                            <br>
-                            To get information about the hotel, we would click on the hotel name. For an example, if we
-                            clicked on
-                            Country Inn & Suites By Radisson, Atlanta/Galleria Ballpark, GA, we would see the following
-                            page:
-                        </p>
-                        <img src="{{url_for('static', filename='tripadvisor_ss2.png') }}" alt="tripadvisor"
-                            class="img-rounded center-block" style="width:75%;">
-                        <br>
-                        <p style="margin-left: 3.25%;">
-
-                            From this page we'll get the following information:
-                        </p>
-                        <ul class="list-group" style="margin-left: 40%; width: 20%;">
-                            <li class="list-group-item">Hotel Name</li>
-                            <li class="list-group-item">Hotel Rating</li>
-                            <li class="list-group-item">Number of Amenities</li>
-                            <li class="list-group-item">Amenities</li>
-                            <li class="list-group-item">Price Range</li>
-                            <li class="list-group-item">Number of Rooms</li>
-                            <li class="list-group-item">URL</li>
-                        </ul>
-                        <p style="margin-left: 3.25%;">
-
-                            Another spider will be used to scrape review data in the same page. An issue I came across
-                            scraping reviews
-                            was that the spider was very inconsistent in expanding the review as shown below.
-                        </p>
-                        <img src="{{url_for('static', filename='tripadvisor_ss3.png') }}" alt="tripadvisor"
-                            class="img-rounded center-block" style="width:75%;">
-                        <p style="margin-left: 3.25%;">
-                            One way to circumvent this was to click on the title of the review, which will reveal a new
-                            page that
-                            contains just the review information.
-                        </p>
-                        <img src="{{url_for('static', filename='tripadvisor_ss4.png') }}" alt="tripadvisor"
-                            class="img-rounded center-block" style="width:50%;">
-                        <p style="margin-left: 3.25%;">
-                            An alternative way would've been to use a package called Selenium. This would've allowed us
-                            to use a browser
-                            such as Chrome or Firefox and perform automated tasks such as clicking javascript items.
-                            Although it was
-                            much faster (since it was able to read 5 reviews at a time and not have to follow through
-                            another url), it
-                            was not as reliable as my current method. With this, we were able to scrape through all of
-                            the reviews in
-                            all of the hotels in Atlanta.
-
-                            <br>
-
-                            To store all of this information, I was able to connect Scrapy to a NoSQL Database using
-                            MongoDB that I have
-                            set up configuring all of my pipelines. At the end of the scrape, I was able to scrape
-                            120,893 reviews and
-                            223 hotels.
-
-                        </p>
-                    </p>
-
-
-
+            <div class="card">
+                <div class="card-header" id="headingTwo">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                            data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"
+                            style="font-size: 40px; color:black;">
+                            Scraping
+                        </button>
+                    </h5>
                 </div>
-            </div>
-        </div>
-        <hr style="border-color: #bfbfbf ; ">
-
-        <div class="card">
-            <div class="card-header" id="headingThree">
-                <h5 class="mb-0">
-                    <button class="btn btn-link collapsed hover" type="button" data-toggle="collapse"
-                        data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"
-                        style="font-size: 40px; color:black;">
-                        Exploratory Data Analysis
-                    </button>
-                </h5>
-            </div>
-            <div id="collapseThree" class="collapse in" aria-labelledby="headingThree" data-parent="#accordionExample">
-                <div class="card-body">
-                    <p style="margin-left: 3.25%;">
-                        We will be working with 2 different datatsets. However one will contain hotel
-                        information, and the other will contain all of the review information. In the end we will merge
-                        both of these tables to make sure we're working with the correct data. However, there are some
-                        hotels that do not have reviews. For our model(s) to give the best recommendations, we will not
-                        be working with these hotels. This decreases our hotel count from 223 to 150 to look at.
-                        <br><br>
-                        First thing we need to see is some descriptive statistics of amongst hotels.
+                <div id="collapseTwo" class="collapse in" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                    <div class="card-body">
                         <p>
+                            <h3 style="font-size: 25px ; margin-left:2%;">Goals:</h3>
                             <p style="margin-left: 3.25%;">
-                                <div class="panel panel-default">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Descriptive Statistics</th>
-                                                <th scope="col">Mean</th>
-                                                <th scope="col">St. Deviation</th>
-                                                <th scope="col">Minimum</th>
-                                                <th scope="col">Maximum</th>
-                                                <th scope="col">Median</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th scope="row">Number of Amenities</th>
-                                                <td>20.607</td>
-                                                <td>5.652</td>
-                                                <td>5</td>
-                                                <td>34</td>
-                                                <td>22</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">Number of Reviews</th>
-                                                <td>757.493</td>
-                                                <td>874.343</td>
-                                                <td>57</td>
-                                                <td>7013</td>
-                                                <td>535.5</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">Hotel Rating</th>
-                                                <td>3.873</td>
-                                                <td>0.608</td>
-                                                <td>1.5</td>
-                                                <td>5</td>
-                                                <td>4</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">Lowest Priced Room</th>
-                                                <td>$140.96</td>
-                                                <td>$60.70</td>
-                                                <td>$54.00</td>
-                                                <td>$588.00</td>
-                                                <td>$134.50</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">Highest Priced Room</th>
-                                                <td>$307.31</td>
-                                                <td>$156.08</td>
-                                                <td>$94.00</td>
-                                                <td>$1387.00</td>
-                                                <td>$276.00</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </p>
-                            <h3 style="font-size: 25px ; margin-left:2%;">Plots:</h3>
-
-                            <p style="margin-left: 3.25%;">
-                                There are some interesting tidbits we can extract from this information:
-                                <li style="margin-left: 5%; ">
-                                    We'll probably see some outliers in the data based on what we see in the median and
-                                    maximum.
-                                </li>
-                                <li style="margin-left: 5%; ">
-                                    If we consider 3 stars to be neutral, most hotels are considered positive.
-                                </li>
-                                <li style="margin-left: 5%; ">
-                                    Price seems be overlap in terms of the most expensive cheapest room is more
-                                    expensive than the cheapest expensive room.
-                                </li>
-                                <hr>
-                            </p>
-                            <p style="margin-left: 3.25%;">
-                                <img src="{{url_for('static', filename='TripAdvisor_fig1.png') }}" alt="tripadvisor"
-                                    class="img-rounded center-block" style="width:75%;">
-                                We definitely see that the number of reviews is right skewed. This is backed up by our
-                                descriptive statistics with our mean being much bigger than our median. We can try to
-                                fix this distribution later in some transformations later on.
-                                <hr>
-                            </p>
-                            <p style="margin-left: 3.25%;">
-                                Since I was able to scrape almost every review, I could see if the stars provided by
-                                TripAdvisor are actually accurate to what reviewers are saying.
-                                <img src="{{url_for('static', filename='TripAdvisor_fig2.png') }}" alt="tripadvisor"
-                                    class="img-rounded center-block" style="width:60%;">
-                                For the most part, we see that it follows a linear path. Which is fine, it was an
-                                assumption that they would round to the nearest half value.
-                                <hr>
-                            </p>
-                            <p style="margin-left: 3.25%;">
-                                One thing I want to see was whether just the sheer number of amenities would have a
-                                relationship with the Hotel rating.
-                                <img src="{{url_for('static', filename='TripAdvisor_fig3.png') }}" alt="tripadvisor"
-                                    class="img-rounded center-block" style="width:75%;">
-                                We see from the violin chart, that it does seem to increase slightly, but then on the 5
-                                stars have a lower amount. We also see that some of the distributions are skewed amongst
-                                the stars, which we will need to look out for.
-                                <hr>
-                            </p>
-                            <p style="margin-left: 3.25%;">
-                                Finally, we'll look at high and low price according to the hotel rating. The general
-                                thought would be, the better the hotel, the more expensive it would be.
-                                <img src="{{url_for('static', filename='TripAdvisor_fig5.png') }}" alt="tripadvisor"
-                                    class="img-rounded center-block" style="width:75%;">
-                                <img src="{{url_for('static', filename='TripAdvisor_fig6.png') }}" alt="tripadvisor"
-                                    class="img-rounded center-block" style="width:75%;">
-                                We see that it does follow this trend, however those rated 1.5 and 2 stars do not seem
-                                to follow this trend at all.
+                                <b>1)</b> Get information about hotels <br>
+                                <b>2)</b> Get information about reviews and the review itself
                             </p>
                         </p>
-                </div>
-            </div>
-        </div>
-        <hr style="border-color: #bfbfbf ; ">
 
-        <div class="card">
-            <div class="card-header" id="headingFour">
-                <h5 class="mb-0">
-                    <button class="btn btn-link collapsed hover" type="button" data-toggle="collapse"
-                        data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour"
-                        style="font-size: 40px; color:black;">
-                        Modeling
-                    </button>
-                </h5>
-            </div>
-            <div id="collapseFour" class="collapse in" aria-labelledby="headingFour" data-parent="#accordionExample">
-                <div class="card-body">
-                    <p style="margin-left: 3.25%;">
-                        I decided to utilize Microsoft's Azure cloud services to perform most of the heavy lifting in my
-                        modeling. My approach to find the best hotel for the user is to:
-                        <li style="margin-left: 5%;">Cluster by hotel information</li>
-                        <li style="margin-left: 5%;">Cluster by reviews</li>
-                        <li style="margin-left: 5%;">Match user's preferences to Hotel and Reviews</li>
-                    </p>
-                    <p style="margin-left: 3.25%;">
-                        A factor I decided to keep out of the models was price of the hotel rooms. This is becasue I
-                        wanted the user to have a choice between hotels that are similar in everything but price.
-                        Therefore they can choose the hotel based on their budget.
-                    </p>
-                    <h3 style="font-size: 25px ; margin-left:2%;">Hotel Cluster:</h3>
-                    <p style="margin-left: 3.25%;">
-                        Since the hotel data set is already small (150 hotels), I was hoping that we might be able to
-                        find a good separation between clusters. There are some numerical values within the information
-                        scraped, so we needed to scale everything to the same range. K-Means is an unsupervised machine
-                        learning model. Although we can pick any number of clusters for our model, I used the <a
-                            href="https://en.wikipedia.org/wiki/Elbow_method_(clustering)">
-                            elbow method</a> to determine the optimal amount. We need to calculate the inertia or
-                        within-cluster sum-of-squares criterion of each point, which is just the sum of squares of each
-                        point minus the closest cluster. These calculations will let us know how close each point are to
-                        their cluster. The higher the inertia it is, the worse the model is considered. However, it is
-                        known that we can always get the inertia lower by adding more centers, and to completely
-                        minimize inertia, we could just pick the number of centers to equal the number of rows. This
-                        would defeat the whole point of trying to cluster the points together. Instead, by looking at
-                        the elbow, or the point where the model suddenly decreases its rate of approaching that perfect
-                        inertia, we can pick that as our "best" number of centers.
-                    </p>
-                    <img src="{{url_for('static', filename='silhouette1.png') }}" alt="tripadvisor"
-                        class="img-rounded center-block" style="width:50%;">
-                    <p style="margin-left: 3.25%;">
-                        Although theoretically, the elbow method is a great way of choosing the centers, it does not
-                        always come up clean. As we see above, it just looks like the curve just keeps decreasing. I
-                        didn't want to choose a number too high, so I decided 30 would be our center based on how the
-                        rate changed.
-
-                        <br>
-
-                        After picking the number of centers, I modeled again over the data as our final model using 30
-                        as our centers. I then saved that model to be used later in the <a
-                            href="/tripadvisor/demo">demo</a>.
-                        Then I created a column as cluster where each row is assigned to a cluster 0-29.
-                    </p>
-                    <h3 style="font-size: 25px ; margin-left:2%;">Review Cluster:</h3>
-                    <p style="margin-left: 3.25%;">
-                        The overall goal of clustering the reviews is to find reviews that would closely match those of
-                        the user. This would be useful if the user has written a review of a hotel where they had a
-                        great time and now they can find users who had similar experiences at different hotels.
-                        <br><br>
-                        I followed a methodology close to the Hotel Cluster to achieve our goal. However, since I'm
-                        now dealing with words and not model we cannot just model that. Instead we need to convert these
-                        words into some numeric values. I employed using Term Frequency-Inverse Document Frequency
-                        (Tf-IDF). Tf-IDF is a statistical tool that allows to learn the importance of a word is to a
-                        document in the corpus. Essentially, by looking at the frequency in the word vs the inverse of
-                        the frequency of the type of document from the population of all of our reviews. Therefore to
-                        think about this, every review I scraped would be the corpus, each review would be the document,
-                        and words in said review would be the words. This method would allow us to rank the words based
-                        on prevalance within the documents. Thus changing our words into meaningful numbers that we can
-                        use to cluster.
-                        <br><br>
-                        Now we look for our elbow curve once again.
-                    </p>
-                    <img src="{{url_for('static', filename='silhouette.png') }}" alt="tripadvisor"
-                        class="img-rounded center-block" style="width:50%;">
-                    <div class="row" style="min-height: 20vh">
-                        <div class="col-md-9">
-
+                        <p>
+                            <h3 style="font-size: 25px;  margin-left:2%;">Methodology:</h3>
                             <p style="margin-left: 3.25%;">
-                                We can see that the elbow is much more clearer than our previous one. It is at around
-                                200, so
-                                we will proceed with that number. We again save the model, and run it on each review. We
-                                assign
-                                them to a cluster from 0 to 199 write it on the table.
+                                <a href="https://scrapy.org/">Scrapy</a>
 
-                                <br><br>
+                                is an open-source python package for scraping website data. For this project, I will be
+                                using it to scrape
+                                information from the TripAdvisor's website. I'll be looking how to get all general
+                                information about the
+                                hotels, along with all reviews associated with each hotels.
+                                <br>
+                                <br>
+                                The first thing we'll need to do is look at the website that we're scraping from. I
+                                decided
+                                to use this
+                                following website:
 
-                                To demonstrate how this works in application, proceed to the <a
-                                    href="/tripadvisor/demo">demo</a>!
-                        </div>
-                        <div class="col-md-3">
-                            
-                            <a href="https://github.com/papaulul/HotelReviews">
-                                
-                                <img src="{{url_for('static', filename='github.png')}}" class="img-rounded"
-                                    style="padding:0 10px; float: left" value="Github">
-                                    <br> 
-                            </a>
-                        </div>
+                                <a
+                                    href="https://www.tripadvisor.com/Hotels-g60898-Atlanta_Georgia-Hotels.html">Link</a>.
+                                Below you'll see a screen shot of what the site will look like. It displays all 223
+                                hotels/properties that
+                                TripAdvisor have information on in the city of Atlanta.
+                            </p>
+                            <img src="{{url_for('static', filename='tripadvisor_ss1.png') }}" alt="tripadvisor"
+                                class="img-rounded center-block" style="width:75%; min-width: 400px">
+                            <p style="margin-left: 3.25%;">
+
+                                <br>
+                                To get information about the hotel, we would click on the hotel name. For an example, if
+                                we
+                                clicked on
+                                Country Inn & Suites By Radisson, Atlanta/Galleria Ballpark, GA, we would see the
+                                following
+                                page:
+                            </p>
+                            <img src="{{url_for('static', filename='tripadvisor_ss2.png') }}" alt="tripadvisor"
+                                class="img-rounded center-block" style="width:75%; min-width: 400px">
+                            <br>
+                            <p style="margin-left: 3.25%;">
+
+                                From this page we'll get the following information:
+                            </p>
+                            <ul class="list-group" style="margin-left: 40%; width: 150px; min-width:20%">
+                                <li class="list-group-item">Hotel Name</li>
+                                <li class="list-group-item">Hotel Rating</li>
+                                <li class="list-group-item">Number of Amenities</li>
+                                <li class="list-group-item">Amenities</li>
+                                <li class="list-group-item">Price Range</li>
+                                <li class="list-group-item">Number of Rooms</li>
+                                <li class="list-group-item">URL</li>
+                            </ul>
+                            <p style="margin-left: 3.25%;">
+
+                                Another spider will be used to scrape review data in the same page. An issue I came
+                                across
+                                scraping reviews
+                                was that the spider was very inconsistent in expanding the review as shown below.
+                            </p>
+                            <img src="{{url_for('static', filename='tripadvisor_ss3.png') }}" alt="tripadvisor"
+                                class="img-rounded center-block" style="width:75%; min-width: 400px">
+                            <p style="margin-left: 3.25%;">
+                                One way to circumvent this was to click on the title of the review, which will reveal a
+                                new
+                                page that
+                                contains just the review information.
+                            </p>
+                            <img src="{{url_for('static', filename='tripadvisor_ss4.png') }}" alt="tripadvisor"
+                                class="img-rounded center-block" style="width:50%; min-width: 400px">
+                            <p style="margin-left: 3.25%;">
+                                An alternative way would've been to use a package called Selenium. This would've allowed
+                                us
+                                to use a browser
+                                such as Chrome or Firefox and perform automated tasks such as clicking javascript items.
+                                Although it was
+                                much faster (since it was able to read 5 reviews at a time and not have to follow
+                                through
+                                another url), it
+                                was not as reliable as my current method. With this, we were able to scrape through all
+                                of
+                                the reviews in
+                                all of the hotels in Atlanta.
+
+                                <br>
+
+                                To store all of this information, I was able to connect Scrapy to a NoSQL Database using
+                                MongoDB that I have
+                                set up configuring all of my pipelines. At the end of the scrape, I was able to scrape
+                                120,893 reviews and
+                                223 hotels.
+
+                            </p>
+                        </p>
+
+
+
                     </div>
-                    </p>
-
                 </div>
             </div>
-        </div>
+            <hr style="border-color: #bfbfbf ; ">
 
+            <div class="card">
+                <div class="card-header" id="headingThree">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed hover" type="button" data-toggle="collapse"
+                            data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"
+                            style="font-size: 40px; color:black;">
+                            Exploratory Data Analysis
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseThree" class="collapse in" aria-labelledby="headingThree"
+                    data-parent="#accordionExample">
+                    <div class="card-body">
+                        <p style="margin-left: 3.25%;">
+                            We will be working with 2 different datatsets. However one will contain hotel
+                            information, and the other will contain all of the review information. In the end we will
+                            merge
+                            both of these tables to make sure we're working with the correct data. However, there are
+                            some
+                            hotels that do not have reviews. For our model(s) to give the best recommendations, we will
+                            not
+                            be working with these hotels. This decreases our hotel count from 223 to 150 to look at.
+                            <br><br>
+                            First thing we need to see is some descriptive statistics of amongst hotels.
+                            <p>
+                                <p style="margin-left: 3.25%;">
+                                    <div class="panel panel-default" style="min-width: 800px; overflow-x: scroll">
+                                        <table class="table table-hover" >
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Descriptive Statistics</th>
+                                                    <th scope="col">Mean</th>
+                                                    <th scope="col">St. Deviation</th>
+                                                    <th scope="col">Minimum</th>
+                                                    <th scope="col">Maximum</th>
+                                                    <th scope="col">Median</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row">Number of Amenities</th>
+                                                    <td>20.607</td>
+                                                    <td>5.652</td>
+                                                    <td>5</td>
+                                                    <td>34</td>
+                                                    <td>22</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Number of Reviews</th>
+                                                    <td>757.493</td>
+                                                    <td>874.343</td>
+                                                    <td>57</td>
+                                                    <td>7013</td>
+                                                    <td>535.5</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Hotel Rating</th>
+                                                    <td>3.873</td>
+                                                    <td>0.608</td>
+                                                    <td>1.5</td>
+                                                    <td>5</td>
+                                                    <td>4</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Lowest Priced Room</th>
+                                                    <td>$140.96</td>
+                                                    <td>$60.70</td>
+                                                    <td>$54.00</td>
+                                                    <td>$588.00</td>
+                                                    <td>$134.50</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Highest Priced Room</th>
+                                                    <td>$307.31</td>
+                                                    <td>$156.08</td>
+                                                    <td>$94.00</td>
+                                                    <td>$1387.00</td>
+                                                    <td>$276.00</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </p>
+                                <h3 style="font-size: 25px ; margin-left:2%;">Plots:</h3>
+
+                                <p style="margin-left: 3.25%;">
+                                    There are some interesting tidbits we can extract from this information:
+                                    <li style="margin-left: 5%; ">
+                                        We'll probably see some outliers in the data based on what we see in the median
+                                        and
+                                        maximum.
+                                    </li>
+                                    <li style="margin-left: 5%; ">
+                                        If we consider 3 stars to be neutral, most hotels are considered positive.
+                                    </li>
+                                    <li style="margin-left: 5%; ">
+                                        Price seems be overlap in terms of the most expensive cheapest room is more
+                                        expensive than the cheapest expensive room.
+                                    </li>
+                                    <hr>
+                                </p>
+                                <p style="margin-left: 3.25%;">
+                                    <img src="{{url_for('static', filename='TripAdvisor_fig1.png') }}" alt="tripadvisor"
+                                        class="img-rounded center-block" style="width:75%; min-width: 400px">
+                                    We definitely see that the number of reviews is right skewed. This is backed up by
+                                    our
+                                    descriptive statistics with our mean being much bigger than our median. We can try
+                                    to
+                                    fix this distribution later in some transformations later on.
+                                    <hr>
+                                </p>
+                                <p style="margin-left: 3.25%;">
+                                    Since I was able to scrape almost every review, I could see if the stars provided by
+                                    TripAdvisor are actually accurate to what reviewers are saying.
+                                    <img src="{{url_for('static', filename='TripAdvisor_fig2.png') }}" alt="tripadvisor"
+                                        class="img-rounded center-block" style="width:60%; min-width: 400px">
+                                    For the most part, we see that it follows a linear path. Which is fine, it was an
+                                    assumption that they would round to the nearest half value.
+                                    <hr>
+                                </p>
+                                <p style="margin-left: 3.25%;">
+                                    One thing I want to see was whether just the sheer number of amenities would have a
+                                    relationship with the Hotel rating.
+                                    <img src="{{url_for('static', filename='TripAdvisor_fig3.png') }}" alt="tripadvisor"
+                                        class="img-rounded center-block" style="width:75%; min-width: 400px">
+                                    We see from the violin chart, that it does seem to increase slightly, but then on
+                                    the 5
+                                    stars have a lower amount. We also see that some of the distributions are skewed
+                                    amongst
+                                    the stars, which we will need to look out for.
+                                    <hr>
+                                </p>
+                                <p style="margin-left: 3.25%;">
+                                    Finally, we'll look at high and low price according to the hotel rating. The general
+                                    thought would be, the better the hotel, the more expensive it would be.
+                                    <img src="{{url_for('static', filename='TripAdvisor_fig5.png') }}" alt="tripadvisor"
+                                        class="img-rounded center-block" style="width:75%; min-width: 400px">
+                                    <img src="{{url_for('static', filename='TripAdvisor_fig6.png') }}" alt="tripadvisor"
+                                        class="img-rounded center-block" style="width:75%; min-width: 400px">
+                                    We see that it does follow this trend, however those rated 1.5 and 2 stars do not
+                                    seem
+                                    to follow this trend at all.
+                                </p>
+                            </p>
+                    </div>
+                </div>
+            </div>
+            <hr style="border-color: #bfbfbf ; ">
+
+            <div class="card">
+                <div class="card-header" id="headingFour">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed hover" type="button" data-toggle="collapse"
+                            data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour"
+                            style="font-size: 40px; color:black;">
+                            Modeling
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseFour" class="collapse in" aria-labelledby="headingFour"
+                    data-parent="#accordionExample">
+                    <div class="card-body">
+                        <p style="margin-left: 3.25%;">
+                            I decided to utilize Microsoft's Azure cloud services to perform most of the heavy lifting
+                            in my
+                            modeling. My approach to find the best hotel for the user is to:
+                            <li style="margin-left: 5%;">Cluster by hotel information</li>
+                            <li style="margin-left: 5%;">Cluster by reviews</li>
+                            <li style="margin-left: 5%;">Match user's preferences to Hotel and Reviews</li>
+                        </p>
+                        <p style="margin-left: 3.25%;">
+                            A factor I decided to keep out of the models was price of the hotel rooms. This is becasue I
+                            wanted the user to have a choice between hotels that are similar in everything but price.
+                            Therefore they can choose the hotel based on their budget.
+                        </p>
+                        <h3 style="font-size: 25px ; margin-left:2%;">Hotel Cluster:</h3>
+                        <p style="margin-left: 3.25%;">
+                            Since the hotel data set is already small (150 hotels), I was hoping that we might be able
+                            to
+                            find a good separation between clusters. There are some numerical values within the
+                            information
+                            scraped, so we needed to scale everything to the same range. K-Means is an unsupervised
+                            machine
+                            learning model. Although we can pick any number of clusters for our model, I used the <a
+                                href="https://en.wikipedia.org/wiki/Elbow_method_(clustering)">
+                                elbow method</a> to determine the optimal amount. We need to calculate the inertia or
+                            within-cluster sum-of-squares criterion of each point, which is just the sum of squares of
+                            each
+                            point minus the closest cluster. These calculations will let us know how close each point
+                            are to
+                            their cluster. The higher the inertia it is, the worse the model is considered. However, it
+                            is
+                            known that we can always get the inertia lower by adding more centers, and to completely
+                            minimize inertia, we could just pick the number of centers to equal the number of rows. This
+                            would defeat the whole point of trying to cluster the points together. Instead, by looking
+                            at
+                            the elbow, or the point where the model suddenly decreases its rate of approaching that
+                            perfect
+                            inertia, we can pick that as our "best" number of centers.
+                        </p>
+                        <img src="{{url_for('static', filename='silhouette1.png') }}" alt="tripadvisor"
+                            class="img-rounded center-block" style="width:50%; min-width: 400px">
+                        <p style="margin-left: 3.25%;">
+                            Although theoretically, the elbow method is a great way of choosing the centers, it does not
+                            always come up clean. As we see above, it just looks like the curve just keeps decreasing. I
+                            didn't want to choose a number too high, so I decided 30 would be our center based on how
+                            the
+                            rate changed.
+
+                            <br>
+
+                            After picking the number of centers, I modeled again over the data as our final model using
+                            30
+                            as our centers. I then saved that model to be used later in the <a
+                                href="/tripadvisor/demo">demo</a>.
+                            Then I created a column as cluster where each row is assigned to a cluster 0-29.
+                        </p>
+                        <h3 style="font-size: 25px ; margin-left:2%;">Review Cluster:</h3>
+                        <p style="margin-left: 3.25%;">
+                            The overall goal of clustering the reviews is to find reviews that would closely match those
+                            of
+                            the user. This would be useful if the user has written a review of a hotel where they had a
+                            great time and now they can find users who had similar experiences at different hotels.
+                            <br><br>
+                            I followed a methodology close to the Hotel Cluster to achieve our goal. However, since I'm
+                            now dealing with words and not model we cannot just model that. Instead we need to convert
+                            these
+                            words into some numeric values. I employed using Term Frequency-Inverse Document Frequency
+                            (Tf-IDF). Tf-IDF is a statistical tool that allows to learn the importance of a word is to a
+                            document in the corpus. Essentially, by looking at the frequency in the word vs the inverse
+                            of
+                            the frequency of the type of document from the population of all of our reviews. Therefore
+                            to
+                            think about this, every review I scraped would be the corpus, each review would be the
+                            document,
+                            and words in said review would be the words. This method would allow us to rank the words
+                            based
+                            on prevalance within the documents. Thus changing our words into meaningful numbers that we
+                            can
+                            use to cluster.
+                            <br><br>
+                            Now we look for our elbow curve once again.
+                        </p>
+                        <img src="{{url_for('static', filename='silhouette.png') }}" alt="tripadvisor"
+                            class="img-rounded center-block" style="width:50%; min-width: 400px">
+                        <div class="row" style="min-height: 20vh">
+                            <div class="col-md-9">
+
+                                <p style="margin-left: 3.25%;">
+                                    We can see that the elbow is much more clearer than our previous one. It is at
+                                    around
+                                    200, so
+                                    we will proceed with that number. We again save the model, and run it on each
+                                    review. We
+                                    assign
+                                    them to a cluster from 0 to 199 write it on the table.
+
+                                    <br><br>
+
+                                    To demonstrate how this works in application, proceed to the <a
+                                        href="/tripadvisor/demo">demo</a>!
+                            </div>
+                            <div class="col-md-3">
+
+                                <a href="https://github.com/papaulul/HotelReviews">
+
+                                    <img src="{{url_for('static', filename='github.png')}}" class="img-rounded"
+                                        style="padding:0 10px; float: left" value="Github">
+                                    <br>
+                                </a>
+                            </div>
+                        </div>
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <br>
     </div>
     <br>
+    <br>
 </div>
-<br>
-<br>
-
 {% endblock %}

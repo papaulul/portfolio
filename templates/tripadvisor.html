@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block page_content %}
-<div style='height: 100vh; overflow-y: scroll;'>
+<div class="pre-scrollable" style='height: 100vh; overflow-y: scroll;'>
     <div class="jumbotron" style="background-image:url(../static/atl2.jpg); background-size: cover; ">
         <h1 class="text-center" style="color: white;">TripAdvisor</h1>
         <img src="{{url_for('static', filename='tripadvisor.png') }}" alt="tripadvisor" class="img-rounded center-block"
@@ -10,21 +10,19 @@
         <div class="center-here text-center">
             <a href="/tripadvisor/about" role="button" class='btn btn-primary btn-lg '
                 style="width:30%;  max-width: 250px;">
-            About
+                About
             </a>
             <a href="/tripadvisor/analysis" role="button" class='btn btn-success btn-lg'
                 style="width:30%;  max-width: 250px;">
-            Analysis
+                Analysis
             </a>
             <a href="/tripadvisor/demo" role="button" class='btn btn-info btn-lg '
                 style="width:30%;  max-width: 250px;">
-            Demo
+                Demo
             </a>
         </div>
     </div>
-    <div class="content" style="margin-left: 10%; margin-right: 10%; font-size: 15px; height: 100vh;">
-        {% block tab %}{% endblock %}
-    </div>
+    {% block tab %}{% endblock %}
 
 </div>
 

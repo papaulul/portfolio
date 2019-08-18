@@ -1,78 +1,83 @@
 {% extends "tripadvisor.html" %}
 {% block tab %}
-<h2 class="center-here text-center">
-    Hotel Recommnedation via TripAdvisor 
-</h2>
-<body>
-    Fill out the form below and click submit. My program then will give you a recommnedation on hotels that you 
-    should look into based on your preferences! 
-</body>
-<form method="POST" action="demo1" >
-    <div class="center-here form-group" style = "margin-left: auto; margin-right:auto">
-        <h3>
-           Preferences
-        </h3>
-        <body>
-            Pick all essential amenities from the list: 
-        </body>
-        <table style="margin-left: auto; margin-right: auto;">
-            <div class="checkbox-inline">
-                <label class="checkbox-inline">
-                    {% for k in range(4) %}
-                    <tr>
-                        {% for j in range(4) %}
-                        <td>
-                            <label>
-                                <input type="checkbox" name="{{amenities[4*k+j]}}"
-                                value="{{amenities[4*k+j]}}"> {{amenities[4*k+j]}} &nbsp
-                            </label>
-                        </td>
+<div class="content" style="margin-left: 10%; margin-right: 10%; font-size: 15px; height: 60em;">
+
+    <h2 class="center-here text-center">
+        Hotel Recommnedation via TripAdvisor
+    </h2>
+
+    <body>
+        Fill out the form below and click submit. My program then will give you a recommnedation on hotels that you
+        should look into based on your preferences!
+    </body>
+    <form method="POST" action="demo1">
+        <div class="center-here form-group" style="margin-left: auto; margin-right:auto">
+            <h3>
+                Preferences
+            </h3>
+
+            <body>
+                Pick all essential amenities from the list:
+            </body>
+            <table style="margin-left: auto; margin-right: auto;">
+                <div class="checkbox-inline">
+                    <label class="checkbox-inline">
+                        {% for k in range(4) %}
+                        <tr>
+                            {% for j in range(4) %}
+                            <td>
+                                <label>
+                                    <input type="checkbox" name="{{amenities[4*k+j]}}" value="{{amenities[4*k+j]}}">
+                                    {{amenities[4*k+j]}} &nbsp
+                                </label>
+                            </td>
+                            {%endfor %}
+                        </tr>
                         {%endfor %}
-                    </tr>
-                    {%endfor %}
-                </label>
-            </div>
+                    </label>
+                </div>
 
-        </table>
-        <br/>
-        <select class="form-control" name="Size" required>
-            <option selected disabled value="None">Size</option>
-            <option value="Small">Small</option>
-            <option value="Medium">Medium</option>
-            <option value="Large">Large</option>
-        </select>
-        <br />
-        <select class="form-control" name="Quality">
-            <option selected disabled value="None">Quality</option>
-            <option value="Ok">Ok</option>
-            <option value="Good">Good</option>
-            <option value="Great">Great</option>
-        </select>
-        <br />
+            </table>
+            <br />
+            <select class="form-control" name="Size" required>
+                <option selected disabled value="None">Size</option>
+                <option value="Small">Small</option>
+                <option value="Medium">Medium</option>
+                <option value="Large">Large</option>
+            </select>
+            <br />
+            <select class="form-control" name="Quality">
+                <option selected disabled value="None">Quality</option>
+                <option value="Ok">Ok</option>
+                <option value="Good">Good</option>
+                <option value="Great">Great</option>
+            </select>
+            <br />
 
-        <label>Enter your best review below: </label>
-        <textarea type="text" rows="3" class="form-control" name="rawtext" required="false">   </textarea>
-        <br />
-        <button type="reset" class="btn btn-primary"> Clear</button>
-        <button type="submit" class="btn btn-info">Submit</button>
+            <label>Enter your best review below: </label>
+            <textarea type="text" rows="3" class="form-control" name="rawtext" required="false">   </textarea>
+            <br />
+            <button type="reset" class="btn btn-primary"> Clear</button>
+            <button type="submit" class="btn btn-info">Submit</button>
 
+        </div>
+    </form>
+    {% if results.items()|length > 0 %}
+    <div class="container" style="height: 20em">
+        <h3>
+            Recommended Hotels:
+        </h3>
+        {% for hotel, value in results.items() %}
+        <li>
+            <a href={{value[2]}}>
+                {{hotel}}</a>
+
+            <body>
+                From {{value[0]}} - {{value[1]}}
+            </body>
+        </li>
+        {%endfor %}
     </div>
-</form>
-{% if results.items()|length > 0 %}
-<div class="container" style="height: 40vh">
-    <h3>
-        Recommended Hotels:
-    </h3>
-    {% for hotel, value in results.items() %}
-    <li>
-        <a
-            href={{value[2]}}>
-        {{hotel}}</a> 
-        <body>
-            From {{value[0]}} - {{value[1]}}
-        </body>
-    </li>
-    {%endfor %}
+    {%endif %}
 </div>
-{%endif %}
 {% endblock %}
